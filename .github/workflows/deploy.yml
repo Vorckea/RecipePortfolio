@@ -19,7 +19,7 @@ jobs:
       - name: Build and Publish
         run: |
           dotnet restore
-          dotnet publish -c Realese -o ./publish
+          dotnet publish -c Release -o ./publish
           
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
