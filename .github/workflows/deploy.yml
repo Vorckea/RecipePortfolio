@@ -1,7 +1,7 @@
-name: Deploy Blazor App to Github Pages
+name: Deploy Blazor App to GitHub Pages
 
 on:
-  push: 
+  push:
     branches: [ main ]
 
 jobs:
@@ -16,22 +16,21 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      - name: Cache .NET packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
       - name: Build and Publish
         run: |
           dotnet restore
           dotnet publish -c Release -o ./publish
-          
+
       - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git add -A
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Deploy to GitHub Pages"
-            git push origin gh-pages
-          else
-            echo "No changes to commit"
-          fi
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./publish
