@@ -29,5 +29,9 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git add -A
-          git commit -m "Deploy to GitHub Pages"
-          git push origin gh-pages
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Deploy to GitHub Pages"
+            git push origin gh-pages
+          else
+            echo "No changes to commit"
+          fi
