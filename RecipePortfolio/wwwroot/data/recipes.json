@@ -4,7 +4,7 @@
     "Title": "Chocolate Cake",
     "Description": "A rich, moist chocolate cake.",
     "Ingredients": [ "2 cups flour", "1 cup sugar", "..." ],
-    "Instructions": [ "Preheat oven to 350°F...", "Mix dry ingredients..." ],
+    "Instructions": [ "Preheat oven to 350ï¿½F...", "Mix dry ingredients..." ],
     "PrepTime": "45 mins",
     "Image": "images/chocolate-cake.jpg",
     "Tags": [ "Dessert", "Chocolate" ]
