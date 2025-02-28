@@ -8,5 +8,26 @@
     "PrepTime": "45 mins",
     "Image": "images/chocolate-cake.jpg",
     "Tags": [ "Dessert", "Chocolate" ]
+  },
+
+  {
+    "Id": "penne-allarrabiata",
+    "Title": "Penne all'Arrabiata",
+    "Description": "Penne all'arrabbiata (arrabbiata translates into angry), which stems from the Lazio region in central Italy, is a dish comprised of penne pasta and sauce prepared with tomatoes, garlic, and chili peppers.",
+    "Ingredients": [
+      "380g ridged penne pasta",
+      "400g canned peeled tomatoes",
+      " 1 clove chopped garlic",
+      "5 tbsp extra virign olive oil",
+      "1-2 chopped hot chili peppers",
+      "4 tbsp fresh chopped parsley"
+    ],
+    "Instructions": [
+      "Using a blender, blend the canned tomatoes in a bowl. Lightly brown the garlic and chili pepper in an oiled pan. Be mindful not to overcook the garlic which, when browned too long, gives a bitter taste to the dish. After adding the tomato sauce, season everything with some salt. Cook until the sauce thickens (15-20 mins).",
+      "In the meantime, cook penne al dente in boiling salted water. Drain and add to the sauce. Stir the pasta and the sauce thoroughly. Chop some fresh parsley and sprinkle it on top. Stir again, and serve."
+    ],
+    "PrepTime": "23 minutes",
+    "Image": "images/penne-allarrabiata.jpg",
+    "Tags": [ "Pasta", "Vegan", "Vegetarian", "Italian" ]
   }
 ]
