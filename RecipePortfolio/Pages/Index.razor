@@ -1,0 +1,25 @@
+﻿@page "/"
+@using RecipePortfolio.Data
+@inject HttpClient Http
+
+<h1>My Recipe Portfolio</h1>
+
+@if (recipes == null){
+    <p>Loading recipes</p>
+}
+else{
+    <div class="recipe-grid">
+        @foreach(var recipe in recipes){
+            <RecipeCard Recipe="@recipe" />
+        })
+    </div>
+}
+
+@code{
+    private List<Recipe>? recipes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        recipes = await Http.GetFromJsonAsync<List<Recipe>>("data/recipes.json");
+    }
+}

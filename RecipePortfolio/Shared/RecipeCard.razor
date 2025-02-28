@@ -1,0 +1,15 @@
+﻿@using RecipePortfolio.Data
+
+<div class="recipe-card">
+    <img src="@Recipe.Image" alt="@Recipe.Title" />
+    <h3>@Recipe.Title</h3>
+    <p>@Recipe.Description</p>
+    <p>Prep time: @Recipe.PrepTime</p>
+    <a href="/recipe/@Recipe.Id">View Recipe</a>
+</div>
+
+@code{
+    [Parameter]
+    public Recipe Recipe { get; set; } = new();
+
+}

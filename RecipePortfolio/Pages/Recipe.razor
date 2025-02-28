@@ -1,0 +1,42 @@
+﻿@page "/recipe/{Id}"
+@inject HttpClient Http
+@using RecipePortfolio.Data
+
+@if (recipe == null){
+<p>Loading recipe</p>
+}
+else
+{
+    <div class="recipe-detail">
+        <h1>@recipe.Title</h1>
+        <img src="@recipe.Image" alt="@recipe.Title" />
+        <h2>Ingredients</h2>
+        <ul>
+            @foreach (var ingredient in recipe.Ingredients)
+            {
+                <li>@ingredient</li>
+            }
+        </ul>
+        <h2>Instructions</h2>
+        <ol>
+            @foreach (var instruction in recipe.Instructions)
+            {
+                <li>@instruction</li>
+            }
+        </ol>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private Data.Recipe? recipe;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
+        recipe = recipes?.FirstOrDefault(r => r.Id == Id);
+    }
+}
