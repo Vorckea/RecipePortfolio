@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using RecipePortfolio.Data
+@using RecipePortfolio.Shared
 @inject HttpClient Http
 
 <h1>My Recipe Portfolio</h1>
@@ -10,16 +11,16 @@
 else{
     <div class="recipe-grid">
         @foreach(var recipe in recipes){
-            <RecipeCard Recipe="@recipe" />
-        })
+            <RecipeCard Recipe="recipe" />
+        }
     </div>
 }
 
 @code{
-    private List<Recipe>? recipes;
+    private List<Data.Recipe>? recipes;
 
     protected override async Task OnInitializedAsync()
     {
-        recipes = await Http.GetFromJsonAsync<List<Recipe>>("data/recipes.json");
+        recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
     }
 }
