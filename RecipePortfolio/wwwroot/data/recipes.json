@@ -28,6 +28,32 @@
     ],
     "PrepTime": "23 minutes",
     "Image": "images/penne-allarrabiata.jpg",
-    "Tags": [ "Pasta", "Vegan", "Vegetarian", "Italian" ]
+    "Tags": [ "Pasta", "Vegan", "Vegetarian", "Italian", "Dinner" ]
+  },
+
+  {
+    "Id": "gnoochi-alla-sorrentina",
+    "Title": "Gnoochi alla Sorrentina",
+    "Description": "Gnocchi alla Sorrentina is an incredible Italian comfort food dish made with soft and light potato gnocchi baked in a rich and delicious tomato sauce with bubbling mozzarella cheese and fresh basil.",
+    "Ingredients": [
+      "500g potato gnocchi",
+      "2 cans of pomodorini tomatoes",
+      "2 finely chopped garlic cloves",
+      "1 large handful fresh basil",
+      "2 balls of roughly chopped mozzarella",
+      "1 tbsp olive oil",
+      "Salt and pepper"
+    ],
+    "Instructions": [
+      "Pre-heat the oven to 430F/220C.",
+      "In a large skillet, add garlic and saute for 1-2 minutes until fragrant but not browned.",
+      "Add the canned pomodorini tomatoes and season with salt and pepper and simmer the sauce for 10 minutes breaking up the tomatoes enough so they burst open. Once simmered add half of the mozzarella and basil then stir to combine",
+      "Meanwhile, bring a large pot of salted water to a boil and cook the gnocchi until they float to the surface",
+      "Remove the gnocchi from the water and add to the tomato sauce, toss to coat in an ovenproof dish",
+      "Top with the remaining mozzarella and bake in the oven for 20 minutes until the cheese is melted and bubbling"
+    ],
+    "PrepTime": "37 minutes",
+    "Image": "images/gnoochi-alla-sorrentina.jpg",
+    "Tags": [ "Pasta", "Vegetarian", "Italian", "Dinner" ]
   }
 ]
