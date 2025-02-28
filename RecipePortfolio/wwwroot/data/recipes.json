@@ -45,7 +45,7 @@
       "Salt and pepper"
     ],
     "Instructions": [
-      "Pre-heat the oven to 430F/220C.",
+      "Pre-heat the oven to 220C.",
       "In a large skillet, add garlic and saute for 1-2 minutes until fragrant but not browned.",
       "Add the canned pomodorini tomatoes and season with salt and pepper and simmer the sauce for 10 minutes breaking up the tomatoes enough so they burst open. Once simmered add half of the mozzarella and basil then stir to combine",
       "Meanwhile, bring a large pot of salted water to a boil and cook the gnocchi until they float to the surface",
@@ -55,5 +55,64 @@
     "PrepTime": "37 minutes",
     "Image": "images/gnoochi-alla-sorrentina.jpg",
     "Tags": [ "Pasta", "Vegetarian", "Italian", "Dinner" ]
+  },
+
+  {
+    "Id": "neapolitanish-pizza-base",
+    "Title": "Neapolitanish Pizza Base",
+    "Descripton": "A Neapolitanish pizza base is a thin, soft, and chewy pizza base that is perfect for a classic Margherita pizza. Perfect for cooking it in a normal oven.",
+    "Ingredients": [
+      "330g all-purpose flour",
+      "220g water (70%)",
+      "1/2 dried yeast pack",
+      "Olive oil"
+    ],
+    "Instructions": [
+      "In a large bowl, mix the flour and yeast together. Add the water and salt and mix until a dough forms.",
+      "Squeeze and turn the dough for 2 minutes until it is smooth and elastic.",
+      "Let the dough rest for 30 min.",
+      "Streth and pull all corners, and then slap and fold to round the dough",
+      "Let the dough rest for another 30 min.",
+      "Split the dough into 275g balls. Pull out and fold into the middle 3 times to form a ball. Flip over and roll in your hand until smooth. Pinch the seam close.",
+      "
+      "Add a little olive oil to a container and put the dough inside",
+      "Let the dough rest for 24 hours in the fridge",
+      "Take the dough out of the fridge 2 hours before cooking",
+      "Flour the surface and press the dough out, but leave edge. Flip it and to it agian. Finally pull and slap tbhe dough to form a thin circle"
+    ],
+    "PrepTime": "24 hours",
+    "Image": "images/neapolitanish-pizza-base.jpg",
+    "Tags": [ "Pizza", "Italian", "Dinner", "Baking" ]
+  },
+
+  {
+    "Id": "baguette",
+    "Title": "Baguette",
+    "Description": "A baguette is a long, thin loaf of French bread that is commonly made from basic lean dough. It is distinguishable by its length and crisp crust.",
+    "Ingredients": [
+      "250g all-purpose flour",
+      "185g water (75%)",
+      "Salt",
+      "1/2 dried yeast pack"
+    ],
+    "Instructions": [
+      "Activate the yeast by mixing it with warm water with some flour. Let it sit for 10 minutes.",
+      "Mix the proofed yeast in a bowl with the flour and salt. Add the water and mix until a dough forms.",
+      "Let the dough rest for 15 min.",
+      "Stretch and fold the dough 4 times, and turn over and let it rest for 25 min. Repeat 4 times.",
+      "Test the dough by stretching it out. If it is transparent, it is ready.",
+      "Divide into equal 145g portions. Press and strecht the dough into small rectangles. Cover it and let it rest for 15 min.",
+      "Fold the top edge of the dough into the center and lightly press on the seam. Roll the ends lightly.",
+      "Let the dough rest for 1 hour until they are 1.5x the size.",
+      "Preheat the oven to 220C with the tray.",
+      "Add a tray of water to the oven to create steam.",
+      "Score with long slashes at a 45 degree angle, and lightly water the bread.",
+      "Bake for 5 min, and then lightly water the bread some more.",
+      "Bake for another 12-15 min until golden brown. Finally let it rest on a wire rack."
+    ],
+    "PrepTime": "3 hours",
+    "Image": "images/baguette.jpg",
+    "Tags": [ "Bread", "French", "Baking" ]
   }
+
 ]
