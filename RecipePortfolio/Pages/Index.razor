@@ -5,22 +5,33 @@
 
 <h1>My Recipe Portfolio</h1>
 
-@if (recipes == null){
+@if (recipes == null || filteredRecipes == null){
     <p>Loading recipes</p>
 }
 else{
+    <input type="text" @bind="searchTerm" placeholder="Search recipes..." oncuechange="@(() =>FilterRecipes)"/>
     <div class="recipe-grid">
-        @foreach(var recipe in recipes){
+        @foreach(var recipe in filteredRecipes){
             <RecipeCard Recipe="recipe" />
         }
     </div>
 }
 
 @code{
+    private string searchTerm = "";
     private List<Data.Recipe>? recipes;
+    private List<Data.Recipe>? filteredRecipes;
 
     protected override async Task OnInitializedAsync()
     {
         recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
+        filteredRecipes = recipes;
+    }
+
+    private void FilterRecipes(){
+        filteredRecipes = recipes?
+            .Where(r => r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
+                || r.Tags.Any(i => i.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
     }
 }
