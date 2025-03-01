@@ -41,7 +41,7 @@ else
         </div>
 
         <div class="mb-4">
-            @foreach (var tag in filteredTags.OrderByDescending(t => selectedTags.Contains(t.Name)).ThenBy(t => t.Name))
+            @foreach (var tag in filteredTags.OrderByDescending(t => selectedTags.Contains(t.Name)).ThenBy(t => t.Count).ThenBy(t => t.Name))
             {
                 <button class="btn tag-pill @GetTagButtonClass(tag.Name)" @onclick="() => ToggleTagSelection(tag.Name)">
                     @tag.Name (@tag.Count)
