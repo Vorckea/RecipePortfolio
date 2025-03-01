@@ -64,11 +64,11 @@ else
         set
         {
             searchTerm = value;
-            DebounceFilerRecipes();
+            DebounceFilterRecipes();
         }
     }
 
-    private void DebounceFilerRecipes()
+    private void DebounceFilterRecipes()
     {
         debounceCts?.Cancel();
         debounceCts = new CancellationTokenSource();

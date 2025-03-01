@@ -2,12 +2,12 @@
 @using Microsoft.AspNetCore.Components.Routing
 
 <NavLink class="recipe-card", href="@($"/recipe/{Recipe.Id}")">
-    <img src="@Recipe.Image" alt="@Recipe.Title" />
+    <img src="@Recipe.Image" alt="@Recipe.Title"/>
     <div class="recipe-card-title">@Recipe.Title</div>
     <div class="recipe-card-description">@Recipe.Description</div>
 </NavLink>
 
 @code{
     [Parameter]
-    public Recipe Recipe { get; set; }
+    public Recipe Recipe { get; set; } = new();
 }
