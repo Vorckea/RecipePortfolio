@@ -9,7 +9,7 @@
     <p>Loading recipes</p>
 }
 else{
-    <input type="text" @bind="searchTerm" placeholder="Search recipes..." oncuechange="@(() =>FilterRecipes)"/>
+    <input type="text" @bind="searchTerm" placeholder="Search recipes..." onwaiting="@Task.Run(() => FilterRecipes())"/>
     <div class="recipe-grid">
         @foreach(var recipe in filteredRecipes){
             <RecipeCard Recipe="recipe" />
@@ -33,5 +33,6 @@ else{
             .Where(r => r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
                 || r.Tags.Any(i => i.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
             .ToList();
+        StateHasChanged();
     }
 }
