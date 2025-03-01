@@ -9,7 +9,11 @@
     <p>Loading recipes</p>
 }
 else{
-    <input type="text" @bind="searchTerm" placeholder="Search recipes..." oninput="@Task.Run(() => FilterRecipes())"/>
+    <input
+    type="text"
+    @bind="SearchTerm"
+    placeholder="Search recipes..."
+    />
     <div class="recipe-grid">
         @foreach(var recipe in filteredRecipes){
             <RecipeCard Recipe="recipe" />
@@ -24,15 +28,38 @@ else{
 
     protected override async Task OnInitializedAsync()
     {
-        recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
-        filteredRecipes = recipes;
+        try
+        {
+            recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
+            filteredRecipes = recipes;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error loading recipes: {e.Message}");
+        }
+        
     }
 
-    private void FilterRecipes(){
+    private string SearchTerm
+    {
+        get => searchTerm;
+        set
+        {
+            searchTerm = value;
+            _ = FilterRecipes();
+        }
+    }
+
+    private async Task FilterRecipes()
+    {
+        await Task.Delay(150);
+
         filteredRecipes = recipes?
-            .Where(r => r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) 
-                || r.Tags.Any(i => i.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+            .Where(r =>
+                r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                (r.Tags != null && r.Tags.Any(t =>
+                    t.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+            )
             .ToList();
-        StateHasChanged();
     }
 }
