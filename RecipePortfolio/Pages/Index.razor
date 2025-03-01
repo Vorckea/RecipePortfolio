@@ -24,10 +24,27 @@ else
 {
     <div class="form-group">
         <input type="text"
-        class="form-control"
+        class="form-control search-bar"
         @bind="SearchTerm"
         placeholder="Search recipes..."
         @oninput="DebounceSearch" />
+    </div>
+
+    <div class="form-group">
+        <input type="text"
+        class="form-control tag-search-bar"
+        @bind="TagSearchTerm"
+        placeholder="Search tags..."
+        @oninput="DebounceTagSearch"/>
+    </div>
+
+    <div class="form-group">
+        @foreach(var tag in filteredTags)
+        {
+            <button class="btn btn-outline-primary tag-pill" @onclick="() => ToggleTagSelection(tag)">
+                @tag
+            </button>
+        }
     </div>
 
     <div class="row">
@@ -42,8 +59,12 @@ else
 
 @code {
     private string searchTerm = "";
+    private string tagSearchTerm = "";
     private List<Data.Recipe>? recipes;
     private List<Data.Recipe>? filteredRecipes;
+    private List<string> allTags = new();
+    private List<string> filteredTags = new();
+    private List<string> selectedTags = new();
     private string? errorMessage;
     private bool isLoading = true;
     private CancellationTokenSource? debounceCts;
@@ -58,6 +79,8 @@ else
         {
             recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
             filteredRecipes = recipes;
+            allTags = recipes?.SelectMany(r => r.Tags).Distinct().ToList();
+            filteredTags = allTags ?? new List<string>();
         }
         catch (HttpRequestException e)
         {
@@ -85,6 +108,16 @@ else
         }
     }
 
+    private string TagSearchTerm
+    {
+        get => tagSearchTerm;
+        set
+        {
+            tagSearchTerm = value;
+            DebounceFilterTags();
+        }
+    }
+
     private void DebounceFilterRecipes()
     {
         debounceCts?.Cancel();
@@ -100,11 +133,25 @@ else
             }, token);
     }
 
+    private void DebounceFilterTags(){
+        debounceCts?.Cancel();
+        debounceCts = new CancellationTokenSource();
+        var token = debounceCts.Token;
+
+        _ = Task.Delay(300, token).ContinueWith(async task =>
+            {
+                if (!task.IsCanceled)
+                {
+                    await FilterTags();
+                }
+            }, token);
+    }
+
     private async Task FilterRecipes()
     {
         if (recipes == null) return;
 
-        if (string.IsNullOrWhiteSpace(searchTerm))
+        if (string.IsNullOrWhiteSpace(searchTerm) && !selectedTags.Any())
         {
             filteredRecipes = recipes;
         }
@@ -112,10 +159,27 @@ else
         {
             filteredRecipes = recipes?
                 .Where(r =>
-                    r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    (r.Tags != null && r.Tags.Any(t =>
-                        t.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                    (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                    (!selectedTags.Any() || r.Tags.Any(t => selectedTags.Contains(t)))
                 )
+                .ToList();
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task FilterTags()
+    {
+        if (allTags == null) return;
+
+        if (string.IsNullOrEmpty(tagSearchTerm))
+        {
+            filteredTags = allTags;
+        }
+        else
+        {
+            filteredTags = allTags
+                .Where(t => t.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
 
@@ -125,6 +189,24 @@ else
     private void DebounceSearch(ChangeEventArgs e)
     {
         SearchTerm = e.Value?.ToString() ?? "";
+    }
+
+    private void DebounceTagSearch(ChangeEventArgs e)
+    {
+        TagSearchTerm = e.Value?.ToString() ?? "";
+    }
+
+    private void ToggleTagSelection(string tag)
+    {
+        if (selectedTags.Contains(tag))
+        {
+            selectedTags.Remove(tag);
+        }
+        else
+        {
+            selectedTags.Add(tag);
+        }
+        DebounceFilterRecipes();
     }
 
     private void LogError(Exception e){

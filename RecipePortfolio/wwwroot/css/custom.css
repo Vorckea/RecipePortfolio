@@ -32,3 +32,25 @@
     max-width: 100%;
     height: auto;
 }
+
+.search-bar {
+    margin-bottom: 1rem;
+}
+
+.tag-search-bar {
+    margin-bottom: 1rem;
+}
+
+.tag-pill {
+    margin: 0.2rem;
+}
+
+.selected-tag-pill {
+    margin: 0.2rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.selected-tag-pill .close {
+    margin-left: 0.5rem;
+}
