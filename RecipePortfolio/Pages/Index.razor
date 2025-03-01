@@ -3,26 +3,37 @@
 @using RecipePortfolio.Shared
 @inject HttpClient Http
 
-<h1>My Recipe Portfolio</h1>
+<h1 class="text-center my-4">My Recipe Portfolio</h1>
 
 @if (recipes == null || filteredRecipes == null){
-    <p>Loading recipes</p>
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p>Loading recipes...</p>
+    </div>
 }
 else if (errorMessage != null)
 {
-    <p class="error">@errorMessage</p>
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
 }
 else
 {
-    <input
-    type="text"
-    @bind="SearchTerm"
-    placeholder="Search recipes..."
-    @oninput="DebounceSearch"
-    />
-    <div class="recipe-grid">
+    <div class="form-group">
+        <input type="text"
+               class="form-control"
+               @bind="SearchTerm"
+               placeholder="Search recipes..."
+               @oninput="DebounceSearch" />
+    </div>
+    
+    <div class="row">
         @foreach(var recipe in filteredRecipes){
-            <RecipeCard Recipe="recipe" />
+            <div class="col-md-4 mb-4">
+                <RecipeCard Recipe="recipe" />
+            </div>
         }
     </div>
 }
