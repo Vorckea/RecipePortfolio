@@ -8,11 +8,17 @@
 @if (recipes == null || filteredRecipes == null){
     <p>Loading recipes</p>
 }
-else{
+else if (errorMessage != null)
+{
+    <p class="error">@errorMessage</p>
+}
+else
+{
     <input
     type="text"
     @bind="SearchTerm"
     placeholder="Search recipes..."
+    @oninput="DebounceSearch"
     />
     <div class="recipe-grid">
         @foreach(var recipe in filteredRecipes){
@@ -25,6 +31,8 @@ else{
     private string searchTerm = "";
     private List<Data.Recipe>? recipes;
     private List<Data.Recipe>? filteredRecipes;
+    private string? errorMessage;
+    private CancellationTokenSource? debounceCts;
 
     protected override async Task OnInitializedAsync()
     {
@@ -35,9 +43,8 @@ else{
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error loading recipes: {e.Message}");
+            errorMessage = $"Error loading recipes: {e.Message}";
         }
-        
     }
 
     private string SearchTerm
@@ -46,8 +53,23 @@ else{
         set
         {
             searchTerm = value;
-            _ = FilterRecipes();
+            DebounceFilerRecipes();
         }
+    }
+
+    private void DebounceFilerRecipes()
+    {
+        debounceCts?.Cancel();
+        debounceCts = new CancellationTokenSource();
+        var token = debounceCts.Token;
+
+        _ = Task.Delay(300, token).ContinueWith(async task => 
+            {
+                if (!task.IsCanceled) 
+                {
+                    await FilterRecipes();
+                }
+            }, token);
     }
 
     private async Task FilterRecipes()
@@ -58,15 +80,22 @@ else{
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
             filteredRecipes = recipes;
-            return;
         }
-
-        filteredRecipes = recipes?
+        else{
+            filteredRecipes = recipes?
             .Where(r =>
                 r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 (r.Tags != null && r.Tags.Any(t =>
                     t.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
             )
             .ToList();
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void DebounceSearch(ChangeEventArgs e)
+    {
+        SearchTerm = e.Value?.ToString() ?? "";
     }
 }
