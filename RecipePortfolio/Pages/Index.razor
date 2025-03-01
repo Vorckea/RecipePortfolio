@@ -5,7 +5,8 @@
 
 <h1 class="text-center my-4">My Recipe Portfolio</h1>
 
-@if (recipes == null || filteredRecipes == null){
+@if (isLoading)
+{
     <div class="text-center">
         <div class="spinner-border text-primary" role="status">
             <span class="sr-only">Loading...</span>
@@ -23,14 +24,15 @@ else
 {
     <div class="form-group">
         <input type="text"
-               class="form-control"
-               @bind="SearchTerm"
-               placeholder="Search recipes..."
-               @oninput="DebounceSearch" />
+        class="form-control"
+        @bind="SearchTerm"
+        placeholder="Search recipes..."
+        @oninput="DebounceSearch" />
     </div>
-    
+
     <div class="row">
-        @foreach(var recipe in filteredRecipes){
+        @foreach (var recipe in filteredRecipes)
+        {
             <div class="col-md-4 mb-4">
                 <RecipeCard Recipe="recipe" />
             </div>
@@ -38,23 +40,38 @@ else
     </div>
 }
 
-@code{
+@code {
     private string searchTerm = "";
     private List<Data.Recipe>? recipes;
     private List<Data.Recipe>? filteredRecipes;
     private string? errorMessage;
+    private bool isLoading = true;
     private CancellationTokenSource? debounceCts;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadRecipesAsync();
+    }
+
+    private async Task LoadRecipesAsync(){
         try
         {
             recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
             filteredRecipes = recipes;
         }
+        catch (HttpRequestException e)
+        {
+            LogError(e);
+            errorMessage = $"Network error: {e.Message}";
+        }
         catch (Exception e)
         {
-            errorMessage = $"Error loading recipes: {e.Message}";
+            LogError(e);
+            errorMessage = $"Unexpected error: {e.Message}";
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 
@@ -74,9 +91,9 @@ else
         debounceCts = new CancellationTokenSource();
         var token = debounceCts.Token;
 
-        _ = Task.Delay(300, token).ContinueWith(async task => 
+        _ = Task.Delay(300, token).ContinueWith(async task =>
             {
-                if (!task.IsCanceled) 
+                if (!task.IsCanceled)
                 {
                     await FilterRecipes();
                 }
@@ -85,21 +102,21 @@ else
 
     private async Task FilterRecipes()
     {
-        await Task.Delay(150);
         if (recipes == null) return;
 
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
             filteredRecipes = recipes;
         }
-        else{
+        else
+        {
             filteredRecipes = recipes?
-            .Where(r =>
-                r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                (r.Tags != null && r.Tags.Any(t =>
-                    t.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
-            )
-            .ToList();
+                .Where(r =>
+                    r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    (r.Tags != null && r.Tags.Any(t =>
+                        t.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+                )
+                .ToList();
         }
 
         await InvokeAsync(StateHasChanged);
@@ -108,5 +125,9 @@ else
     private void DebounceSearch(ChangeEventArgs e)
     {
         SearchTerm = e.Value?.ToString() ?? "";
+    }
+
+    private void LogError(Exception e){
+        Console.Error.WriteLine(e);
     }
 }

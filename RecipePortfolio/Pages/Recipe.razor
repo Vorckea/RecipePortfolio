@@ -2,8 +2,6 @@
 @using RecipePortfolio.Data
 @inject HttpClient Http
 
-
-
 @if (isLoading)
 {
     <div class="text-center">
@@ -38,7 +36,7 @@ else
                 <ul class="list-group">
                     @foreach (var ingredient in recipe.Ingredients)
                     {
-                        <li class="list-group-item"> @ingredient</li>
+                        <li class="list-group-item">@ingredient</li>
                     }
                 </ul>
             </div>
@@ -70,10 +68,18 @@ else
         {
             var recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
             recipe = recipes?.FirstOrDefault(r => r.Id == Id);
+            if (recipe == null)
+            {
+                errorMessage = "Recipe not found.";
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            errorMessage = $"Network error: {e.Message}";
         }
         catch (Exception e)
         {
-            errorMessage = $"Error loading recipe: {e.Message}";
+            errorMessage = $"Unexpected error: {e.Message}";
         }
         finally
         {
