@@ -4,13 +4,25 @@
 
 
 
-@if (recipe == null)
+@if (isLoading)
 {
     <div class="text-center">
         <div class="spinner-border text-primary" role="status">
             <span class="sr-only">Loading...</span>
         </div>
         <p>Loading recipe...</p>
+    </div>
+}
+else if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+else if (recipe == null)
+{
+    <div class="alert alert-warning" role="alert">
+        Recipe not found
     </div>
 }
 else
@@ -49,10 +61,24 @@ else
     public string Id { get; set; } = "";
 
     private Data.Recipe? recipe;
+    private bool isLoading = true;
+    private string? errorMessage;
 
     protected override async Task OnParametersSetAsync()
     {
-        var recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
-        recipe = recipes?.FirstOrDefault(r => r.Id == Id);
+        try
+        {
+            var recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
+            recipe = recipes?.FirstOrDefault(r => r.Id == Id);
+        }
+        catch (Exception e)
+        {
+            errorMessage = $"Error loading recipe: {e.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+
     }
 }
