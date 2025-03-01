@@ -38,13 +38,31 @@
     border-radius: 50px;
     padding: 0.5rem 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+}
+
+.search-section {
+    background-color: #f1f1f1;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
 }
 
 .tag-pill {
     margin: 0.2rem;
     border-radius: 50px;
     padding: 0.5rem 1rem;
+    transition: background-color 0.2s, color 0.2s;
+    display: inline-flex;
+    cursor: pointer;
+    background-color: #e9ecef;
+    color: #495057
 }
+
+    .tag-pill:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
 
 .selected-tag-pill {
     margin: 0.2rem;
@@ -52,8 +70,17 @@
     align-items: center;
     border-radius: 50px;
     padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.selected-tag-pill .close {
-    margin-left: 0.5rem;
-}
+    .selected-tag-pill .close {
+        margin-left: 0.5rem;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .selected-tag-pill:hover {
+        background-color: #0056b3;
+    }
