@@ -1,7 +1,7 @@
 ﻿@using RecipePortfolio.Data
 @using Microsoft.AspNetCore.Components.Routing
 
-<NavLink class="recipe-card", href="@($"/recipe/{Recipe.Id}")">
+<NavLink class="recipe-card" href="@($"/recipe/{Recipe.Id}")">
     <img src="@Recipe.Image" alt="@Recipe.Title"/>
     <div class="recipe-card-title">@Recipe.Title</div>
     <div class="recipe-card-description">@Recipe.Description</div>
