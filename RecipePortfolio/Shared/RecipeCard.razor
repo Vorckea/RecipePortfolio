@@ -1,10 +1,12 @@
 ﻿@using RecipePortfolio.Data
 @using Microsoft.AspNetCore.Components.Routing
 
-<NavLink class="recipe-card" href="@($"/recipe/{Recipe.Id}")">
-    <img src="@Recipe.Image" alt="@Recipe.Title"/>
-    <div class="recipe-card-title">@Recipe.Title</div>
-    <div class="recipe-card-description">@Recipe.Description</div>
+<NavLink class="card mb-3" href="@($"recipe/{Recipe.Id}")">
+    <img src="@Recipe.Image" class="card-img-top" alt="@Recipe.Title"/>
+    <div class="card-body">
+        <h5 class="card-title">@Recipe.Title</h5>
+        <p class="card-text">@Recipe.Description</p>
+    </div>
 </NavLink>
 
 @code{
