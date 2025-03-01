@@ -7,18 +7,11 @@
 
 @if (isLoading)
 {
-    <div class="text-center">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-        <p>Loading recipes...</p>
-    </div>
+    <LoadingSpinner Message="Loading recipes..." />
 }
 else if (errorMessage != null)
 {
-    <div class="alert alert-danger" role="alert">
-        @errorMessage
-    </div>
+    <ErrorAlert Message="@errorMessage" />
 }
 else
 {
