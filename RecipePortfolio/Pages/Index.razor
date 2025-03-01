@@ -26,25 +26,25 @@ else
         <div class="row mb-4">
             <div class="col-md-6">
                 <input type="text"
-                       class="form-control search-bar"
-                       @bind="SearchTerm"
-                       placeholder="Search recipes..."
-                       @oninput="DebounceSearch" />
+                class="form-control search-bar"
+                @bind="SearchTerm"
+                placeholder="Search recipes..."
+                @oninput="DebounceSearch" />
             </div>
             <div class="col-md-6">
                 <input type="text"
-                       class="form-control tag-search-bar"
-                       @bind="TagSearchTerm"
-                       placeholder="Search tags..."
-                       @oninput="DebounceTagSearch" />
+                class="form-control tag-search-bar"
+                @bind="TagSearchTerm"
+                placeholder="Search tags..."
+                @oninput="DebounceTagSearch" />
             </div>
         </div>
 
         <div class="mb-4">
-            @foreach (var tag in filteredTags)
+            @foreach (var tag in filteredTags.OrderByDescending(t => selectedTags.Contains(t.Name)).ThenBy(t => t.Name))
             {
-                <button class="btn tag-pill" @onclick="() => ToggleTagSelection(tag)">
-                    @tag
+                <button class="btn tag-pill @GetTagButtonClass(tag.Name)" @onclick="() => ToggleTagSelection(tag.Name)">
+                    @tag.Name (@tag.Count)
                 </button>
             }
         </div>
@@ -61,7 +61,6 @@ else
             }
         </div>
     </div>
-    
 
     <div class="row">
         @foreach (var recipe in filteredRecipes)
@@ -78,8 +77,8 @@ else
     private string tagSearchTerm = "";
     private List<Data.Recipe>? recipes;
     private List<Data.Recipe>? filteredRecipes;
-    private List<string> allTags = new();
-    private List<string> filteredTags = new();
+    private List<Tag> allTags = new();
+    private List<Tag> filteredTags = new();
     private List<string> selectedTags = new();
     private string? errorMessage;
     private bool isLoading = true;
@@ -95,8 +94,11 @@ else
         {
             recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
             filteredRecipes = recipes;
-            allTags = recipes?.SelectMany(r => r.Tags).Distinct().ToList();
-            filteredTags = allTags ?? new List<string>();
+            allTags = recipes?.SelectMany(r => r.Tags)
+                .GroupBy(t => t)
+                .Select(g => new Tag { Name = g.Key, Count = g.Count() })
+                .ToList();
+            filteredTags = allTags ?? new List<Tag>(); 
         }
         catch (HttpRequestException e)
         {
@@ -176,11 +178,12 @@ else
             filteredRecipes = recipes?
                 .Where(r =>
                     (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)) &&
-                    (!selectedTags.Any() || r.Tags.Any(t => selectedTags.Contains(t)))
+                    (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
                 )
                 .ToList();
         }
 
+        await UpdateTagCounts();
         await InvokeAsync(StateHasChanged);
     }
 
@@ -195,9 +198,28 @@ else
         else
         {
             filteredTags = allTags
-                .Where(t => t.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase))
+                .Where(t => t.Name.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateTagCounts()
+    {
+        var tags = recipes
+            .Where(r => string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+            .SelectMany(r => r.Tags)
+            .GroupBy(t => t)
+            .Select(g => new Tag { Name = g.Key, Count = g.Count() })
+            .ToList();
+
+        allTags = tags;
+        filteredTags = tags
+            .Where(t => string.IsNullOrEmpty(tagSearchTerm) || t.Name.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        selectedTags = selectedTags.Where(tag => tags.Any(t => t.Name == tag && t.Count > 0)).ToList();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -230,7 +252,18 @@ else
         DebounceFilterRecipes();
     }
 
+    private string GetTagButtonClass(string tag)
+    {
+        return selectedTags.Contains(tag) ? "btn-primary" : "btn-secondary";
+    }
+
     private void LogError(Exception e){
         Console.Error.WriteLine(e);
+    }
+
+    private class Tag
+    {
+        public string Name { get; set; }
+        public int Count { get; set; }
     }
 }
