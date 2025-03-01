@@ -33,22 +33,25 @@
     height: auto;
 }
 
-.search-bar {
+.search-bar, .tag-search-bar {
     margin-bottom: 1rem;
-}
-
-.tag-search-bar {
-    margin-bottom: 1rem;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .tag-pill {
     margin: 0.2rem;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
 }
 
 .selected-tag-pill {
     margin: 0.2rem;
     display: inline-flex;
     align-items: center;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
 }
 
 .selected-tag-pill .close {
