@@ -53,6 +53,13 @@ else{
     private async Task FilterRecipes()
     {
         await Task.Delay(150);
+        if (recipes == null) return;
+
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredRecipes = recipes;
+            return;
+        }
 
         filteredRecipes = recipes?
             .Where(r =>
