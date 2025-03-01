@@ -47,6 +47,17 @@ else
         }
     </div>
 
+    <div class="form-group">
+        @foreach (var tag in selectedTags){
+            <span class="badge badge-primary selected-tag-pill">
+                @tag
+                <button type="button" class="close" aria-label="Close" @onclick="() => RemoveTag(tag)">
+                    <span aria-hidden="true">&times;</span>                
+                 </button>
+            </span>
+        }
+    </div>
+
     <div class="row">
         @foreach (var recipe in filteredRecipes)
         {
@@ -206,6 +217,11 @@ else
         {
             selectedTags.Add(tag);
         }
+        DebounceFilterRecipes();
+    }
+
+    private void RemoveTag(string tag){
+        selectedTags.Remove(tag);
         DebounceFilterRecipes();
     }
 
