@@ -9,7 +9,7 @@
     <p>Loading recipes</p>
 }
 else{
-    <input type="text" @bind="searchTerm" placeholder="Search recipes..." onwaiting="@Task.Run(() => FilterRecipes())"/>
+    <input type="text" @bind="searchTerm" placeholder="Search recipes..." oninput="@Task.Run(() => FilterRecipes())"/>
     <div class="recipe-grid">
         @foreach(var recipe in filteredRecipes){
             <RecipeCard Recipe="recipe" />
