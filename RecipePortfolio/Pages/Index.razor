@@ -207,8 +207,16 @@ else
 
     private async Task UpdateTagCounts()
     {
-        var tags = recipes
-            .Where(r => string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+        if (recipes == null) return;
+
+        var filteredRecipesForTags = recipes
+            .Where(r =>
+                (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
+            )
+            .ToList();
+
+        var tags = filteredRecipesForTags
             .SelectMany(r => r.Tags)
             .GroupBy(t => t)
             .Select(g => new Tag { Name = g.Key, Count = g.Count() })
@@ -218,7 +226,6 @@ else
         filteredTags = tags
             .Where(t => string.IsNullOrEmpty(tagSearchTerm) || t.Name.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase))
             .ToList();
-
         selectedTags = selectedTags.Where(tag => tags.Any(t => t.Name == tag && t.Count > 0)).ToList();
 
         await InvokeAsync(StateHasChanged);
