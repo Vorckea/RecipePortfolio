@@ -28,6 +28,8 @@ h1 {
 
 .card-img-top {
     border-radius: 8px 8px 0 0;
+    object-fit: cover;
+    height: 200px;
 }
 
 .card-title {
@@ -37,6 +39,7 @@ h1 {
 
 .card-body {
     padding: 1rem;
+    flex: 1;
 }
 
 .card-text {
