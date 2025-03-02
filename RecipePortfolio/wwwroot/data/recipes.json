@@ -32,8 +32,8 @@
   },
 
   {
-    "Id": "gnoochi-alla-sorrentina",
-    "Title": "Gnoochi alla Sorrentina",
+    "Id": "gnocchi-alla-sorrentina",
+    "Title": "Gnocchi alla Sorrentina",
     "Description": "Gnocchi alla Sorrentina is an incredible Italian comfort food dish made with soft and light potato gnocchi baked in a rich and delicious tomato sauce with bubbling mozzarella cheese and fresh basil.",
     "Ingredients": [
       "500g potato gnocchi",
@@ -53,7 +53,7 @@
       "Top with the remaining mozzarella and bake in the oven for 20 minutes until the cheese is melted and bubbling"
     ],
     "PrepTime": "37 minutes",
-    "Image": "images/gnoochi-alla-sorrentina.jpg",
+    "Image": "images/gnocchi-alla-sorrentina.jpg",
     "Tags": [ "Pasta", "Vegetarian", "Italian", "Dinner", "Gnocchi" ]
   },
 
