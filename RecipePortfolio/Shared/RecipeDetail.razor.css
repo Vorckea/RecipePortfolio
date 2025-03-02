@@ -1,0 +1,17 @@
+﻿.recipe-detail {
+    margin-top: 1rem;
+}
+
+    .recipe-detail .recipe-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .recipe-detail .list-group-item {
+        border: none;
+        padding: 0.5rem 1rem;
+    }
+
+    .recipe-detail .badge {
+        margin-right: 0.5rem;
+    }
