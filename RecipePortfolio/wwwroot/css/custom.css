@@ -6,45 +6,6 @@ body {
     color: #343a40;
 }
 
-.recipe-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-    .recipe-card .card-body{
-        flex-grow: 1;
-    }
-
-    .recipe-card:hover {
-        transform: scale(1.05);
-    }
-
-    .recipe-card img {
-        max-height: 200px;
-        object-fit: cover;
-        max-width: 100%;
-        border-radius: 8px 8px 0 0;
-    }
-
-.recipe-card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 8px;
-}
-
-.recipe-card-description {
-    font-size: 1rem;
-    color: #666;
-    margin-top: 8px;
-}
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;

@@ -3,9 +3,15 @@
 
 <NavLink class="card mb-3 recipe-card" href="@($"recipe/{Recipe.Id}")">
     <img src="@Recipe.Image" class="card-img-top" alt="@Recipe.Title"/>
-    <div class="card-body">
-        <h5 class="card-title">@Recipe.Title</h5>
-        <p class="card-text">@Recipe.Description</p>
+    <div class="card-body recipe-card-body">
+        <div class="card-title recipe-card-title">@Recipe.Title</div>
+        <div class="card-text recipe-card-description">@Recipe.Description</div>
+        <div class="recipe-card-tags">
+            @foreach (var tag in Recipe.Tags)
+            {
+                <span class="badge recipe-card-tag">@tag</span>
+            }
+        </div>
     </div>
 </NavLink>
 
