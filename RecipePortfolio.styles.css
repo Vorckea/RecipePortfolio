@@ -1,9 +1,10 @@
 /* /Pages/Index.razor.rz.scp.css */
 .search-section[b-tux0xrazp2] {
-    background-color: #f1f1f1;
+    background-color: #ffffff;
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .search-bar[b-tux0xrazp2], .tag-search-bar[b-tux0xrazp2] {
@@ -11,7 +12,7 @@
     border-radius: 50px;
     padding: 0.5rem 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #f8f9fa;
+    background-color: #ffffff;
 }
 
 .tag-pill[b-tux0xrazp2] {
@@ -22,7 +23,7 @@
     display: inline-flex;
     cursor: pointer;
     background-color: #e9ecef;
-    color: #495057
+    color: #495057;
 }
 
     .tag-pill:hover[b-tux0xrazp2] {
@@ -50,6 +51,56 @@
     .selected-tag-pill:hover[b-tux0xrazp2] {
         background-color: #0056b3;
     }
+/* /Shared/RecipeCard.razor.rz.scp.css */
+.recipe-card[b-vg70j2kb0s] {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+
+    .recipe-card:hover[b-vg70j2kb0s] {
+        transform: scale(1.02);
+    }
+
+    .recipe-card img[b-vg70j2kb0s] {
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid #ddd;
+    }
+
+.recipe-card-body[b-vg70j2kb0s] {
+    padding: 16px;
+}
+
+.recipe-card-title[b-vg70j2kb0s] {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.recipe-card-description[b-vg70j2kb0s] {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.recipe-card-tags[b-vg70j2kb0s] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.recipe-card-tag[b-vg70j2kb0s] {
+    background-color: #007bff;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
 /* /Shared/RecipeDetail.razor.rz.scp.css */
 .recipe-detail[b-5vliwpljwa] {
     margin-top: 1rem;
