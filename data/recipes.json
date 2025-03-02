@@ -117,7 +117,7 @@
   {
     "Id": "gnocchi",
     "Title": "Gnocchi",
-    "Description": "Pillowy and light potato pasta",
+    "Description": "Pillowy-soft, melt-in-your-mouth Italian dumplings made with just three ingredients! These delicate potato gnocchi are crafted using a traditional method that roasts (not boils!) russet potatoes for concentrated flavor, then combines them with a whisper of flour to create a tender, cloud-like texture. Ridged with a fork to cradle rich sauces, they’re boiled to perfection and finished with a quick chill for a flawless bite. Serve them simply tossed in sage-brown butter, marinara, or pesto—or pan-fry for crispy edges!",
     "Ingredients": [
       "1000g potatoes",
       "100g all purpose flour",
@@ -135,7 +135,7 @@
     ],
     "PrepTime": "2 hours",
     "Image": "images/gnocchi.jpg",
-    "Tags": [ "Pasta", "Italian", "Gnocchi", "Baking"]
+    "Tags": [ "Pasta", "Italian", "Gnocchi", "Baking" ]
   }
 
 ]
