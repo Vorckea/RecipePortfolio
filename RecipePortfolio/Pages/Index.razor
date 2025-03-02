@@ -95,13 +95,11 @@ else
         }
         catch (HttpRequestException e)
         {
-            LogError(e);
-            errorMessage = $"Network error: {e.Message}";
+            LogError(e, "Network error");
         }
         catch (Exception e)
         {
-            LogError(e);
-            errorMessage = $"Unexpected error: {e.Message}";
+            LogError(e, "Unexpected error");
         }
         finally
         {
@@ -115,7 +113,7 @@ else
         set
         {
             searchTerm = value;
-            DebounceFilterRecipes();
+            DebounceFilter(DebounceFilterRecipes);
         }
     }
 
@@ -125,75 +123,45 @@ else
         set
         {
             tagSearchTerm = value;
-            DebounceFilterTags();
+            DebounceFilter(DebounceFilterTags);
         }
     }
 
-    private void DebounceFilterRecipes()
+    private void DebounceFilter(Action filterAction)
     {
         debounceCts?.Cancel();
         debounceCts = new CancellationTokenSource();
         var token = debounceCts.Token;
-
         _ = Task.Delay(300, token).ContinueWith(async task =>
             {
                 if (!task.IsCanceled)
                 {
-                    await FilterRecipes();
+                    filterAction();
                 }
             }, token);
     }
 
-    private void DebounceFilterTags(){
-        debounceCts?.Cancel();
-        debounceCts = new CancellationTokenSource();
-        var token = debounceCts.Token;
-
-        _ = Task.Delay(300, token).ContinueWith(async task =>
-            {
-                if (!task.IsCanceled)
-                {
-                    await FilterTags();
-                }
-            }, token);
-    }
-
-    private async Task FilterRecipes()
+    private async void DebounceFilterRecipes()
     {
         if (recipes == null) return;
 
-        if (string.IsNullOrWhiteSpace(searchTerm) && !selectedTags.Any())
-        {
-            filteredRecipes = recipes;
-        }
-        else
-        {
-            filteredRecipes = recipes?
-                .Where(r =>
-                    (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)) &&
-                    (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
-                )
-                .ToList();
-        }
+        filteredRecipes = recipes
+            .Where(r =>
+                (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
+            )
+            .ToList();
 
         await UpdateTagCounts();
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task FilterTags()
-    {
+    private async void DebounceFilterTags(){
         if (allTags == null) return;
 
-        if (string.IsNullOrEmpty(tagSearchTerm))
-        {
-            filteredTags = allTags;
-        }
-        else
-        {
-            filteredTags = allTags
-                .Where(t => t.Name.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
+        filteredTags = string.IsNullOrEmpty(tagSearchTerm)
+            ? allTags
+            : allTags.Where(t => t.Name.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -206,8 +174,7 @@ else
             .Where(r =>
                 (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
                 (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
-            )
-            .ToList();
+            ).ToList();
 
         var tags = filteredRecipesForTags
             .SelectMany(r => r.Tags)
@@ -244,12 +211,12 @@ else
         {
             selectedTags.Add(tag);
         }
-        DebounceFilterRecipes();
+        DebounceFilter(DebounceFilterRecipes);
     }
 
     private void RemoveTag(string tag){
         selectedTags.Remove(tag);
-        DebounceFilterRecipes();
+        DebounceFilter(DebounceFilterRecipes);
     }
 
     private string GetTagButtonClass(string tag)
@@ -257,8 +224,10 @@ else
         return selectedTags.Contains(tag) ? "btn-primary" : "btn-secondary";
     }
 
-    private void LogError(Exception e){
+    private void LogError(Exception e, string message)
+    {
         Console.Error.WriteLine(e);
+        errorMessage = $"{message}: {e.Message}";
     }
 
     private class Tag
