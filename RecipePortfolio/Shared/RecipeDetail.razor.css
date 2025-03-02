@@ -12,6 +12,7 @@
         padding: 0.5rem 1rem;
     }
 
-    .recipe-detail .badge {
-        margin-right: 0.5rem;
+    .recipe-detail .badge-info {
+        background-color: #17a2b8;
+        color: #fff;
     }
