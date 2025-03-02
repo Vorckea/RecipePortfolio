@@ -1,4 +1,6 @@
 ﻿.recipe-card {
+    display: flex;
+    flex-direction: column;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -20,6 +22,9 @@
 
 .recipe-card-body {
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .recipe-card-title {
@@ -33,6 +38,11 @@
     font-size: 1rem;
     color: #555;
     margin-bottom: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
 }
 
 .recipe-card-tags {

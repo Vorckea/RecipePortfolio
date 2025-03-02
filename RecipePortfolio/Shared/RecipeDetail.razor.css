@@ -14,5 +14,5 @@
 
     .recipe-detail .badge-info {
         background-color: var(--primary-color);
-        color: #fff;
+        color: var(--background-color);
     }
