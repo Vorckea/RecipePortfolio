@@ -1,7 +1,23 @@
 ﻿:root {
-    --text-color: #0C1018;
-    --background-color: #f4f6fb;
-    --primary-color: #3f6ed5;
-    --secondary-color: #7b9eef;
-    --accent-color: #3f77f8;
+    /* Text Colors */
+    --text-rgb: 12, 16, 24;
+    --text-color: rgb(var(--text-rgb));
+    --text-color5: rgba(var(--text-rgb), 0.05);
+
+    /* Background Colors */
+    --background-rgb: 255, 255, 255;
+    --background-color: rgb(var(--background-rgb));
+    /* Primary Colors */
+
+    --primary-rgb: 63, 110, 213;
+    --primary-color: rgb(var(--primary-rgb));
+    --primary-color5: rgba(var(--primary-rgb), 0.05);
+    /* Secondary Colors */
+
+    --secondary-rgb: 123, 158, 239;
+    --secondary-color: rgb(var(--secondary-rgb));
+    /* Accent Colors */
+
+    --accent-rgb: 63, 119, 248;
+    --accent-color: rgb(var(--accent-rgb));
 }
