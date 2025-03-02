@@ -38,11 +38,6 @@
     margin-top: 8px;
 }
 
-.recipe-image {
-    max-width: 100%;
-    height: auto;
-}
-
 .search-bar, .tag-search-bar {
     margin-bottom: 1rem;
     border-radius: 50px;

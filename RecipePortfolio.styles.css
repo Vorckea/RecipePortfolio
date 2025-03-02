@@ -1,0 +1,18 @@
+/* /Shared/RecipeDetail.razor.rz.scp.css */
+.recipe-detail[b-5vliwpljwa] {
+    margin-top: 1rem;
+}
+
+    .recipe-detail .recipe-image[b-5vliwpljwa] {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .recipe-detail .list-group-item[b-5vliwpljwa] {
+        border: none;
+        padding: 0.5rem 1rem;
+    }
+
+    .recipe-detail .badge[b-5vliwpljwa] {
+        margin-right: 0.5rem;
+    }
