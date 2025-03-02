@@ -90,7 +90,7 @@ else
             allTags = recipes?.SelectMany(r => r.Tags)
                 .GroupBy(t => t)
                 .Select(g => new Tag { Name = g.Key, Count = g.Count() })
-                .ToList();
+                .ToList() ?? new List<Tag>();
             filteredTags = allTags ?? new List<Tag>(); 
         }
         catch (HttpRequestException e)
@@ -127,7 +127,7 @@ else
         }
     }
 
-    private void DebounceFilter(Action filterAction)
+    private void DebounceFilter(Func<Task> filterAction)
     {
         debounceCts?.Cancel();
         debounceCts = new CancellationTokenSource();
@@ -136,12 +136,12 @@ else
             {
                 if (!task.IsCanceled)
                 {
-                    filterAction();
+                    await filterAction();
                 }
             }, token);
     }
 
-    private async void DebounceFilterRecipes()
+    private async Task DebounceFilterRecipes()
     {
         if (recipes == null) return;
 
@@ -156,7 +156,7 @@ else
         await InvokeAsync(StateHasChanged);
     }
 
-    private async void DebounceFilterTags(){
+    private async Task DebounceFilterTags(){
         if (allTags == null) return;
 
         filteredTags = string.IsNullOrEmpty(tagSearchTerm)
@@ -170,17 +170,15 @@ else
     {
         if (recipes == null) return;
 
-        var filteredRecipesForTags = recipes
+        var tags = recipes
             .Where(r =>
                 (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
                 (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
-            ).ToList();
-
-        var tags = filteredRecipesForTags
+            )
             .SelectMany(r => r.Tags)
             .GroupBy(t => t)
             .Select(g => new Tag { Name = g.Key, Count = g.Count() })
-            .ToList();
+            .ToList();            
 
         allTags = tags;
         filteredTags = tags
