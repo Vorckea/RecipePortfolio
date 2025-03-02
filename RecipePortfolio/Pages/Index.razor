@@ -91,7 +91,7 @@ else
                 .GroupBy(t => t)
                 .Select(g => new Tag { Name = g.Key, Count = g.Count() })
                 .ToList() ?? new List<Tag>();
-            filteredTags = allTags ?? new List<Tag>(); 
+            filteredTags = allTags; 
         }
         catch (HttpRequestException e)
         {
@@ -153,7 +153,6 @@ else
             .ToList();
 
         await UpdateTagCounts();
-        await InvokeAsync(StateHasChanged);
     }
 
     private async Task DebounceFilterTags(){
