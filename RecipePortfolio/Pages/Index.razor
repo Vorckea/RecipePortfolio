@@ -1,7 +1,10 @@
 ﻿@page "/"
-@using RecipePortfolio.Data
+@using RecipePortfolio.Models
+@using RecipePortfolio.Services
 @using RecipePortfolio.Shared
-@inject HttpClient Http
+@using RecipePortfolio.Utils
+@inject RecipeService RecipeService
+@inject RecipeFilterService RecipeFilterService
 
 <h1 class="text-center my-4">My Recipe Portfolio</h1>
 
@@ -68,8 +71,8 @@ else
 @code {
     private string searchTerm = "";
     private string tagSearchTerm = "";
-    private List<Data.Recipe>? recipes;
-    private List<Data.Recipe>? filteredRecipes;
+    private List<Models.Recipe>? recipes;
+    private List<Models.Recipe>? filteredRecipes;
     private List<Tag> allTags = new();
     private List<Tag> filteredTags = new();
     private List<string> selectedTags = new();
@@ -85,7 +88,7 @@ else
     private async Task LoadRecipesAsync(){
         try
         {
-            recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
+            recipes = await RecipeService.GetRecipesAsync();
             filteredRecipes = recipes;
             allTags = recipes?.SelectMany(r => r.Tags)
                 .GroupBy(t => t)
@@ -113,7 +116,7 @@ else
         set
         {
             searchTerm = value;
-            DebounceFilter(DebounceFilterRecipes);
+            DebounceUtils.Debounce(DebounceFilterRecipes, ref debounceCts);
         }
     }
 
@@ -123,35 +126,15 @@ else
         set
         {
             tagSearchTerm = value;
-            DebounceFilter(DebounceFilterTags);
+            DebounceUtils.Debounce(DebounceFilterTags, ref debounceCts);
         }
-    }
-
-    private void DebounceFilter(Func<Task> filterAction)
-    {
-        debounceCts?.Cancel();
-        debounceCts = new CancellationTokenSource();
-        var token = debounceCts.Token;
-        _ = Task.Delay(300, token).ContinueWith(async task =>
-            {
-                if (!task.IsCanceled)
-                {
-                    await filterAction();
-                }
-            }, token);
     }
 
     private async Task DebounceFilterRecipes()
     {
         if (recipes == null) return;
 
-        filteredRecipes = recipes
-            .Where(r =>
-                (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
-                (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
-            )
-            .ToList();
-
+        filteredRecipes = RecipeFilterService.FilterRecipes(recipes, searchTerm, selectedTags);
         await UpdateTagCounts();
     }
 
@@ -169,15 +152,7 @@ else
     {
         if (recipes == null) return;
 
-        var tags = recipes
-            .Where(r =>
-                (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
-                (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
-            )
-            .SelectMany(r => r.Tags)
-            .GroupBy(t => t)
-            .Select(g => new Tag { Name = g.Key, Count = g.Count() })
-            .ToList();            
+        var tags = RecipeFilterService.UpdateTagCounts(recipes, searchTerm, selectedTags);
 
         allTags = tags;
         filteredTags = tags
@@ -208,12 +183,12 @@ else
         {
             selectedTags.Add(tag);
         }
-        DebounceFilter(DebounceFilterRecipes);
+        DebounceUtils.Debounce(DebounceFilterRecipes, ref debounceCts);
     }
 
     private void RemoveTag(string tag){
         selectedTags.Remove(tag);
-        DebounceFilter(DebounceFilterRecipes);
+        DebounceUtils.Debounce(DebounceFilterRecipes, ref debounceCts);
     }
 
     private string GetTagButtonClass(string tag)
@@ -225,11 +200,5 @@ else
     {
         Console.Error.WriteLine(e);
         errorMessage = $"{message}: {e.Message}";
-    }
-
-    private class Tag
-    {
-        public string Name { get; set; }
-        public int Count { get; set; }
     }
 }

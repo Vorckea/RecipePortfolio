@@ -1,4 +1,4 @@
-﻿namespace RecipePortfolio.Data
+﻿namespace RecipePortfolio.Models
 {
     public class Recipe
     {

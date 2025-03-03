@@ -1,6 +1,7 @@
 ﻿@page "/recipe/{Id}"
-@using RecipePortfolio.Data
-@inject HttpClient Http
+@using RecipePortfolio.Models
+@using RecipePortfolio.Services
+@inject RecipeService RecipeService
 
 @if (isLoading)
 {
@@ -24,7 +25,7 @@ else
     [Parameter]
     public string Id { get; set; } = "";
 
-    private Data.Recipe? recipe;
+    private Models.Recipe? recipe;
     private bool isLoading = true;
     private string? errorMessage;
 
@@ -32,7 +33,7 @@ else
     {
         try
         {
-            var recipes = await Http.GetFromJsonAsync<List<Data.Recipe>>("data/recipes.json");
+            var recipes = await RecipeService.GetRecipesAsync();
             recipe = recipes?.FirstOrDefault(r => r.Id == Id);
             if (recipe == null)
             {
