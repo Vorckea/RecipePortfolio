@@ -1,0 +1,15 @@
+﻿.tag-pill {
+    margin: 0.2rem;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s, color 0.2s;
+    display: inline-flex;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--text-color)
+}
+
+    .tag-pill:hover {
+        background-color: var(--primary-color);
+        color: var(--background-color);
+    }

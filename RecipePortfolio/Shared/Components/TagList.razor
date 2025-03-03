@@ -1,0 +1,26 @@
+﻿@using RecipePortfolio.Models
+
+<div class="mb-4">
+    @foreach (var tag in Tags.OrderByDescending(t => SelectedTags.Contains(t.Name)).ThenByDescending(t => t.Count).ThenBy(t => t.Name))
+    {
+        <button class="btn tag-pill @GetTagButtonClass(tag.Name)" @onclick="() => OnTagClick.InvokeAsync(tag.Name)">
+            @tag.Name (@tag.Count)
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Tag> Tags { get; set; }
+
+    [Parameter]
+    public List<string> SelectedTags { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnTagClick { get; set; }
+
+    private string GetTagButtonClass(string tag)
+    {
+        return SelectedTags.Contains(tag) ? "btn-primary" : "btn-secondary";
+    }
+}

@@ -1,0 +1,20 @@
+﻿@using RecipePortfolio.Models
+<div class="mb-4">
+    @foreach (var tag in Tags){
+        <span class="badge badge-primary selected-tag-pill">
+            @tag
+            <button type="button" class="close" aria-label="Close" @onclick="() => OnTagRemove.InvokeAsync(tag)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<string> Tags { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnTagRemove { get; set; }
+
+}

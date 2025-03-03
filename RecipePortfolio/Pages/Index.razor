@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using RecipePortfolio.Models
 @using RecipePortfolio.Services
+@using RecipePortfolio.Shared.Components
 @using RecipePortfolio.Shared
 @using RecipePortfolio.Utils
 @inject RecipeService RecipeService
@@ -21,51 +22,18 @@ else
     <div class="search-section">
         <div class="row mb-4">
             <div class="col-md-6">
-                <input type="text"
-                class="form-control search-bar"
-                @bind="SearchTerm"
-                placeholder="Search recipes..."
-                @oninput="DebounceSearch" />
+                <SearchBar SearchTerm="@SearchTerm" OnInput="DebounceSearch" Placeholder="Search recipes..." />
             </div>
             <div class="col-md-6">
-                <input type="text"
-                class="form-control tag-search-bar"
-                @bind="TagSearchTerm"
-                placeholder="Search tags..."
-                @oninput="DebounceTagSearch" />
+                <SearchBar SearchTerm="@TagSearchTerm" OnInput="DebounceTagSearch" Placeholder="Search tags..." />
             </div>
         </div>
 
-        <div class="mb-4">
-            @foreach (var tag in filteredTags.OrderByDescending(t => selectedTags.Contains(t.Name)).ThenByDescending(t => t.Count).ThenBy(t => t.Name))
-            {
-                <button class="btn tag-pill @GetTagButtonClass(tag.Name)" @onclick="() => ToggleTagSelection(tag.Name)">
-                    @tag.Name (@tag.Count)
-                </button>
-            }
-        </div>
-
-        <div class="mb-4">
-            @foreach (var tag in selectedTags)
-            {
-                <span class="badge badge-primary selected-tag-pill">
-                    @tag
-                    <button type="button" class="close" aria-label="Close" @onclick="() => RemoveTag(tag)">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </span>
-            }
-        </div>
+        <TagList Tags="filteredTags" SelectedTags="selectedTags" OnTagClick="ToggleTagSelection" />
+        <SelectedTagsList Tags="selectedTags" OnTagRemove="RemoveTag" />
     </div>
 
-    <div class="row">
-        @foreach (var recipe in filteredRecipes)
-        {
-            <div class="col-md-4 mb-4 d-flex">
-                <RecipeCard Recipe="recipe" />
-            </div>
-        }
-    </div>
+    <RecipeList Recipes="filteredRecipes" />
 }
 
 @code {
@@ -189,11 +157,6 @@ else
     private void RemoveTag(string tag){
         selectedTags.Remove(tag);
         DebounceUtils.Debounce(DebounceFilterRecipes, ref debounceCts);
-    }
-
-    private string GetTagButtonClass(string tag)
-    {
-        return selectedTags.Contains(tag) ? "btn-primary" : "btn-secondary";
     }
 
     private void LogError(Exception e, string message)

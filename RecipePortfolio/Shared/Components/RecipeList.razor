@@ -1,0 +1,15 @@
+﻿@using RecipePortfolio.Models
+
+<div class="row"> 
+    @foreach (var recipe in Recipes)
+    {
+        <div class="col-md-4 mb-4 d-flex">
+            <RecipeCard Recipe="recipe" />
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Recipe> Recipes { get; set; }
+}

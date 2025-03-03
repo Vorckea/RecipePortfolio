@@ -1,0 +1,21 @@
+﻿.selected-tag-pill {
+    margin: 0.2rem;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+    .selected-tag-pill .close {
+        margin-left: 0.5rem;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .selected-tag-pill:hover {
+        background-color: var(--accent-color);
+        color: var(--text-color);
+    }
