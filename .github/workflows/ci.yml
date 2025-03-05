@@ -2,11 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build: 
@@ -22,7 +20,7 @@ jobs:
         dotnet-version: "9.0.x"
 
     - name: Restore dpendencies
-      run: dotnet restrore
+      run: dotnet restore
 
     - name: Build
       run: dotnet build --no-restore --configuration Release
