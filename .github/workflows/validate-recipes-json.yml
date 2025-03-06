@@ -1,0 +1,38 @@
+name: Validate recipes.json
+
+on:
+  push:
+    paths: 
+      - 'RecipePortfolio/wwwroot/data/recipes.json'
+  pull_request:
+    paths:
+      - 'RecipePortfolio/wwwroot/data/recipes.json'
+jobs:
+  validate-json:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+
+    - name: Install dependencies
+      run: npm install -g ajv-cli
+
+    - name: Cache Node.js packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node- 
+
+    - name: Validate recipes.json
+      run: |
+        ajv validate -s schema.json -d RecipePortfolio/wwwroot/data/recipes.json
+
+    - name: Check for valid JSON format
+      run: |
+        cat RecipePortfolio/wwwroot/data/recipes.json | jq empty

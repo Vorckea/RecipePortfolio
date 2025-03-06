@@ -31,6 +31,7 @@ jobs:
 
       - name: Build and Publish
         run: |
+          dotnet clean
           dotnet restore
           dotnet publish -c Release -o ./publish
 
