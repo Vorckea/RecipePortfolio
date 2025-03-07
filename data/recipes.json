@@ -136,6 +136,37 @@
     "PrepTime": "2 hours",
     "Image": "images/gnocchi.jpg",
     "Tags": [ "Pasta", "Italian", "Gnocchi", "Baking" ]
+  },
+
+  {
+    "Id": "tagliatelle-al-tagu-alla-bolognese",
+    "Title": "Tagliatelle al Ragù alla Bolognese",
+    "Description": "Tagliatelle al Ragù alla Bolognese is a traditional Italian pasta dish from Bologna, Italy. It is a meat-based sauce that is slow-cooked to develop a rich, deep flavor. The sauce is then tossed with tagliatelle pasta and topped with freshly grated Parmesan cheese.",
+    "Ingredients": [
+      "400g coarsely ground beef",
+      "150g finely chopped pancetta",
+      "1/2 finely chopped onion",
+      "1 medium carrot",
+      "1 celery stalk",
+      "120 ml red or white wine",
+      "200g passata",
+      "1 tbsp tomato paste",
+      "120 ml whole milk",
+      "ligth meat or vegetable broth",
+      "Olive oil",
+      "Salt and pepper"
+    ],
+    "Instructions": [
+      "Cook the pancetta in medium heat until melted.",
+      "Set the heat to low and add the vegetables. Cook and stir constantly, until soft.",
+      "Set the heat to medium and add the meat. Cook and break it up, until browned, about 10 min.",
+      "Pour in the wine and reduce until evaporated. Then add the tomato paste and passata.",
+      "Pour in 120ml of boiling stock and let it simmer for 2-3 hours. Add milk halfway through the cook time, and make sure it is fully evaporated by the time its done.",
+      "Toss with tagliatelle and serve."
+    ],
+    "PrepTime": "3 hours",
+    "Image": "images/tagliatelle-al-tagu-alla-bolognese.jpg",
+    "Tags": [ "Pasta", "Italian", "Dinner" ]
   }
 
 ]
