@@ -16,7 +16,7 @@
         "items": { "type": "string" }
       },
       "PrepTime": { "type": "string" },
-      "Portion": { "type": "string }, 
+      "Portion": { "type": "string" }, 
       "Image": { "type": "string" },
       "Tags": {
         "type": "array",
