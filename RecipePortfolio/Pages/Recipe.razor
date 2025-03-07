@@ -23,13 +23,31 @@ else
 
 
 @code {
+    /// <summary>
+    /// The ID of the recipe to display.
+    /// </summary>
     [Parameter]
     public string Id { get; set; } = "";
 
+    /// <summary>
+    /// The recipe to display.
+    /// </summary>
     private Models.Recipe? recipe;
+
+    /// <summary>
+    /// Indicates whether the page is currently loading data.
+    /// </summary>
     private bool isLoading = true;
+
+    /// <summary>
+    /// The error message to display if an error occurs.
+    /// </summary>
     private string? errorMessage;
 
+    /// <summary>
+    /// Called when the component has received parameters from its parent in the render tree.
+    /// </summary>
+    /// <returns></returns>
     protected override async Task OnParametersSetAsync()
     {
         try
