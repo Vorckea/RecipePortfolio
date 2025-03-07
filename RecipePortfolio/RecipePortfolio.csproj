@@ -11,4 +11,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties wwwroot_4data_4recipes_1json__JsonSchema="https://raw.githubusercontent.com/Vorckea/RecipePortfolio/refs/heads/main/schema.json" /></VisualStudio></ProjectExtensions>
+
 </Project>
