@@ -6,6 +6,7 @@
     "Ingredients": [ "2 cups flour", "1 cup sugar", "..." ],
     "Instructions": [ "Preheat oven to 350�F...", "Mix dry ingredients..." ],
     "PrepTime": "45 mins",
+    "Portion": "12",
     "Image": "images/chocolate-cake.jpg",
     "Tags": [ "Dessert", "Chocolate" ]
   },
@@ -27,6 +28,7 @@
       "In the meantime, cook penne al dente in boiling salted water. Drain and add to the sauce. Stir the pasta and the sauce thoroughly. Chop some fresh parsley and sprinkle it on top. Stir again, and serve."
     ],
     "PrepTime": "23 minutes",
+    "Portion": "4",
     "Image": "images/penne-allarrabiata.jpg",
     "Tags": [ "Pasta", "Vegan", "Vegetarian", "Italian", "Dinner" ]
   },
@@ -53,6 +55,7 @@
       "Top with the remaining mozzarella and bake in the oven for 20 minutes until the cheese is melted and bubbling"
     ],
     "PrepTime": "37 minutes",
+    "Portion": "4",
     "Image": "images/gnocchi-alla-sorrentina.jpg",
     "Tags": [ "Pasta", "Vegetarian", "Italian", "Dinner", "Gnocchi" ]
   },
@@ -80,6 +83,7 @@
       "Flour the surface and press the dough out, but leave edge. Flip it and to it agian. Finally pull and slap tbhe dough to form a thin circle"
     ],
     "PrepTime": "24 hours",
+    "Portion": "2",
     "Image": "images/neapolitanish-pizza-base.jpg",
     "Tags": [ "Pizza", "Italian", "Dinner", "Baking" ]
   },
@@ -110,6 +114,7 @@
       "Bake for another 12-15 min until golden brown. Finally let it rest on a wire rack."
     ],
     "PrepTime": "3 hours",
+    "Portion": "2",
     "Image": "images/baguette.jpg",
     "Tags": [ "Bread", "French", "Baking" ]
   },
@@ -134,6 +139,7 @@
       "Remove the gnocchi and set on a towel to dry."
     ],
     "PrepTime": "2 hours",
+    "Portion": "6",
     "Image": "images/gnocchi.jpg",
     "Tags": [ "Pasta", "Italian", "Gnocchi", "Baking" ]
   },
@@ -165,6 +171,7 @@
       "Toss with tagliatelle and serve."
     ],
     "PrepTime": "3 hours",
+    "Portion": "6",
     "Image": "images/tagliatelle-al-tagu-alla-bolognese.jpg",
     "Tags": [ "Pasta", "Italian", "Dinner" ]
   }
