@@ -16,12 +16,13 @@
         "items": { "type": "string" }
       },
       "PrepTime": { "type": "string" },
+      "Portion": { "type": "string }, 
       "Image": { "type": "string" },
       "Tags": {
         "type": "array",
         "items": { "type": "string" }
       }
     },
-    "required": ["Id", "Title", "Description", "Ingredients", "Instructions", "PrepTime", "Image", "Tags"]
+    "required": ["Id", "Title", "Description", "Ingredients", "Instructions", "PrepTime", "Portion", "Image", "Tags"]
   }
 }
