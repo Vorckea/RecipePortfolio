@@ -1,5 +1,9 @@
 # RecipePortfolio
 
+[![License](https://img.shields.io/github/license/Vorckea/RecipePortfolio)](https://github.com/Vorckea/RecipePortfolio/blob/main/LICENSE)
+[![Open Issues](https://img.shields.io/github/issues/Vorckea/RecipePortfolio)](https://github.com/Vorckea/RecipePortfolio/issues)
+[![Open Pull Requests](https://img.shields.io/github/issues-pr/Vorckea/RecipePortfolio)](https://github.com/Vorckea/RecipePortfolio/pulls)
+
 RecipePortfolio is a web application built with Blazor WebAssembly that allows users to browse, filter, and view detailed recipes. The application is designed to be responsive and user-friendly.
 
 ## Features
