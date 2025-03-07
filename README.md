@@ -1,6 +1,10 @@
 # RecipePortfolio
 
-RecipePortfolio is a web application built with Blazor WebAssembly that allows users to browse, filter, and view detailed recipes. The application is designed to be responsive and user-friendly, providing a seamless experience for users to find and manage their favorite recipes.
+[![License](https://img.shields.io/github/license/Vorckea/RecipePortfolio)](https://github.com/Vorckea/RecipePortfolio/blob/main/LICENSE)
+[![Open Issues](https://img.shields.io/github/issues/Vorckea/RecipePortfolio)](https://github.com/Vorckea/RecipePortfolio/issues)
+[![Open Pull Requests](https://img.shields.io/github/issues-pr/Vorckea/RecipePortfolio)](https://github.com/Vorckea/RecipePortfolio/pulls)
+
+RecipePortfolio is a web application built with Blazor WebAssembly that allows users to browse, filter, and view detailed recipes. The application is designed to be responsive and user-friendly.
 
 ## Features
 
@@ -34,19 +38,41 @@ RecipePortfolio is a web application built with Blazor WebAssembly that allows u
 
 ### Installation
 
-1. Clone the repository: **`git clone https://github.com/Vorckea/RecipePortfolio.git`**
-2. Navigate to the project directory: **`cd RecipePortfolio`**
-3. Restore the dependencies: **`dotnet restore`**
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/Vorckea/RecipePortfolio.git
+    ```
+2. Navigate to the project directory:
+    ```sh
+    cd RecipePortfolio
+    ```
+3. Restore the dependencies:
+    ```sh
+    dotnet restore
+    ```
 
 ### Running the Application
 
-1. Build the application: **`dotnet build`**
-2. Run the application: **`dotnet run --project RecipePortfolio`**
+1. Build the application:
+    ```sh
+    dotnet build
+    ```
+2. Run the application:
+    ```sh
+    dotnet run --project RecipePortfolio
+    ```
 3. Open your browser and navigate to `https://localhost:5001` to view the application.
 
 ### Running Tests
-1. Navigate to the test project directory: **`cd RecipePortfolio.Test`**
-2. Run the tests: **`dotnet test`**
+
+1. Navigate to the test project directory:
+    ```sh
+    cd RecipePortfolio.Test
+    ```
+2. Run the tests:
+    ```sh
+    dotnet test
+    ```
 
 ## Contributing
 
@@ -54,7 +80,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
@@ -62,5 +88,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [Bootstrap](https://getbootstrap.com/)
 - [bUnit](https://bunit.dev/)
 - [xUnit](https://xunit.net/)
-
-    
