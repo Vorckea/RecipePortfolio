@@ -1,0 +1,82 @@
+﻿/* custom.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+h1 {
+    color: var(--primary-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.tag-pill {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.selected-tag-pill {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.loading-progress {
+    stroke: var(--primary-color)
+}
+
+.loading-progress-text {
+    color: var(--text-color);
+}
+
+#blazor-error-ui {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+}
+
+    #blazor-error-ui .reload {
+        color: var(--primary-color);
+    }
+
+    #blazor-error-ui .dismiss {
+        color: var(--text-color);
+    }
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+.card-img-top {
+    border-radius: 8px 8px 0 0;
+    object-fit: cover;
+    height: 200px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 1rem;
+    flex: 1;
+}
+
+.card-text {
+    color: #666;
+}
