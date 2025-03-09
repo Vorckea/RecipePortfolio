@@ -18,8 +18,8 @@ namespace RecipePortfolio.Services
         {
             return recipes
                 .Where(r =>
-                    (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm)) &&
-                    (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
+                    (string.IsNullOrEmpty(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                    (selectedTags.Count == 0|| selectedTags.All(tag => r.Tags.Contains(tag)))
                     )
                 .ToList();
         }
@@ -35,8 +35,8 @@ namespace RecipePortfolio.Services
         {
             return recipes
                 .Where(r =>
-                    (string.IsNullOrWhiteSpace(searchTerm) || r.Title.Contains(searchTerm)) &&
-                    (!selectedTags.Any() || selectedTags.All(tag => r.Tags.Contains(tag)))
+                    (string.IsNullOrEmpty(searchTerm) || r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                    (selectedTags.Count == 0 || selectedTags.All(tag => r.Tags.Contains(tag)))
                 )
                 .SelectMany(r => r.Tags)
                 .GroupBy(tag => tag)

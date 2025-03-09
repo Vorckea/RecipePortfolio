@@ -58,10 +58,12 @@ else
         {
             recipes = await RecipeService.GetRecipesAsync();
             filteredRecipes = recipes;
-            allTags = recipes?.SelectMany(r => r.Tags)
+            allTags = recipes?
+                .SelectMany(r => r.Tags)
                 .GroupBy(t => t)
                 .Select(g => new Tag { Name = g.Key, Count = g.Count() })
                 .ToList() ?? new List<Tag>();
+
             filteredTags = allTags; 
         }
         catch (HttpRequestException e)
