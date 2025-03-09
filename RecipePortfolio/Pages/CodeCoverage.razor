@@ -1,20 +1,72 @@
 ﻿@page "/code-coverage"
-@inject HttpClient Http
+@using System.Text.Json
 
 <h3>Code Coverage Report</h3>
 
-@if (reportContent == null){
+@if (string.IsNullOrEmpty(reportContent))
+{
     <p>Loading...</p>
 }
-else {
-    <iframe srcdoc="@reportContent" style="width: 100%; height: 600px;"></iframe>
+else
+{
+    <div>@(new MarkupString(reportContent))</div>
 }
 
 @code {
-    private string? reportContent;
+    private string reportContent;
 
     protected override async Task OnInitializedAsync()
     {
-        reportContent = await Http.GetStringAsync("https://vorckea.github.io/RecipePortfolio/coverage/index.htm");
+        // Fetch the code coverage report content
+        reportContent = await FetchReportContent();
+    }
+
+    private async Task<string> FetchReportContent()
+    {
+        var owner = "Vorckea"; // Replace with your GitHub username or organization
+        var repo = "RecipePortfolio"; // Replace with your repository name
+        var artifactName = "code_coverage"; // Replace with your artifact name
+
+        using var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("BlazorApp/1.0");
+
+        // Fetch the list of artifacts
+        var artifactsUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/artifacts";
+        var artifactsResponse = await httpClient.GetStringAsync(artifactsUrl);
+        var artifacts = JsonDocument.Parse(artifactsResponse).RootElement.GetProperty("artifacts");
+
+        // Find the code coverage artifact
+        JsonElement? artifact = null;
+        foreach (var item in artifacts.EnumerateArray())
+        {
+            if (item.GetProperty("name").GetString() == artifactName)
+            {
+                artifact = item;
+                break;
+            }
+        }
+
+        if (artifact == null)
+        {
+            return "Artifact not found.";
+        }
+
+        var artifactId = artifact.Value.GetProperty("id").GetInt32();
+        var downloadUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/artifacts/{artifactId}/zip";
+
+        // Download the artifact
+        var artifactResponse = await httpClient.GetStreamAsync(downloadUrl);
+        using var archive = new System.IO.Compression.ZipArchive(artifactResponse);
+        var entry = archive.GetEntry("index.html"); // Adjust the entry name as needed
+
+        if (entry == null)
+        {
+            return "Artifact content not found.";
+        }
+
+        using var reader = new StreamReader(entry.Open());
+        var content = await reader.ReadToEndAsync();
+
+        return content;
     }
 }
