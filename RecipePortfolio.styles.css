@@ -26,6 +26,8 @@
     .recipe-card img[b-pgkzjr53uc] {
         width: 100%;
         height: auto;
+        max-height: 300px;
+        object-fit: cover;
         border-bottom: 1px solid #ddd;
     }
 
