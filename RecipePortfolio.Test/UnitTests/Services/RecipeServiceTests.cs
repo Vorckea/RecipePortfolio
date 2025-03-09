@@ -1,13 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using Moq;
+﻿using Moq;
 using Moq.Protected;
 using RecipePortfolio.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecipePortfolio.Test.UnitTests.Services
 {
@@ -39,7 +33,7 @@ namespace RecipePortfolio.Test.UnitTests.Services
 
             return new RecipeService(httpClient);
 
-            
+
         }
 
         [Fact]
