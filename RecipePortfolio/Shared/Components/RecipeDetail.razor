@@ -1,7 +1,6 @@
 ﻿@using RecipePortfolio.Models
 
 <div class="recipe-detail container mt-4">
-    <button class="btn btn-secondary mb-4" @onclick="NavigateBack">Back</button>
     <h1 class="text-center mb-4">@Recipe.Title</h1>
     <div class="text-center mb-4">
         <img src="@Recipe.Image" alt="@Recipe.Title" class="recipe-image img-fluid rounded" />
@@ -54,12 +53,4 @@
 @code {
     [Parameter]
     public Recipe Recipe { get; set; }
-
-    [Inject]
-    private NavigationManager Navigation { get; set; }
-
-    private void NavigateBack()
-    {
-        Navigation.NavigateTo(Navigation.BaseUri);
-    }
 }
