@@ -2,7 +2,8 @@
 @using RecipePortfolio.Models
 @using RecipePortfolio.Services
 @using RecipePortfolio.Shared.Components
-@inject RecipeService RecipeService
+@inject IRecipeService RecipeService
+@inject IRecipeFilterService RecipeFilterService
 
 @if (isLoading)
 {
@@ -29,7 +30,7 @@ else
             <p class="text-center">No suggested available.</p>
         }
     </div>
-    
+
 }
 
 
@@ -68,16 +69,15 @@ else
     {
         try
         {
-            var recipes = await RecipeService.GetRecipesAsync();
-            recipe = recipes?.FirstOrDefault(r => r.Id == Id);
+            recipe = await RecipeService.GetRecipeByIdAsync(Id);
             if (recipe == null)
             {
                 errorMessage = "Recipe not found.";
             }
             else{
-                suggestedRecipes = recipes?
-                    .Where(r => r.Id != Id && r.Tags.Any(tag => recipe.Tags.Contains(tag)))
-                    .ToList();
+                var recipes = await RecipeService.GetRecipesAsync();
+                var filteredRecipes = RecipeFilterService.FilterRecipesByTagsInclusive(recipes, recipe.Tags);
+                suggestedRecipes = filteredRecipes.Where(r => r.Id != recipe.Id).Take(6).ToList();
             }
         }
         catch (HttpRequestException e)

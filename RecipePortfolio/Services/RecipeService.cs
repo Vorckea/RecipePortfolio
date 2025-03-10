@@ -6,7 +6,7 @@ namespace RecipePortfolio.Services
     /// <summary>
     /// A service for managing recipes.
     /// </summary>
-    public class RecipeService
+    public class RecipeService : IRecipeService
     {
         private readonly HttpClient _httpClient;
 
@@ -26,6 +26,17 @@ namespace RecipePortfolio.Services
         public async Task<List<Recipe>> GetRecipesAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<Recipe>>("data/recipes.json") ?? new List<Recipe>();
+        }
+
+        /// <summary>
+        /// Gets a recipe by its ID asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the recipe.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the <see cref="Recipe"/> object.</returns>
+        public async Task<Recipe?> GetRecipeByIdAsync(string id)
+        {
+            var recipes = await GetRecipesAsync();
+            return recipes.FirstOrDefault(r => r.Id == id);
         }
     }
 }

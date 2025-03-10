@@ -4,8 +4,9 @@
 @using RecipePortfolio.Shared.Components
 @using RecipePortfolio.Shared
 @using RecipePortfolio.Utils
-@inject RecipeService RecipeService
-@inject RecipeFilterService RecipeFilterService
+@inject IRecipeService RecipeService
+@inject IRecipeFilterService RecipeFilterService
+@inject ITagService TagService
 
 <h1 class="text-center my-4">My Recipe Portfolio</h1>
 
@@ -58,12 +59,7 @@ else
         {
             recipes = await RecipeService.GetRecipesAsync();
             filteredRecipes = recipes;
-            allTags = recipes?
-                .SelectMany(r => r.Tags)
-                .GroupBy(t => t)
-                .Select(g => new Tag { Name = g.Key, Count = g.Count() })
-                .ToList() ?? new List<Tag>();
-
+            allTags = TagService.GetTagsFromRecipes(recipes);
             filteredTags = allTags; 
         }
         catch (HttpRequestException e)
@@ -83,17 +79,17 @@ else
     private async Task OnSearchTermChanged(string searchTerm)
     {
         this.searchTerm = searchTerm;
-        await DebounceFilterRecipes();
+        await FilterRecipes();
     }
 
     private async Task OnTagSearchTermChanged(string tagSearchTerm)
     {
         this.tagSearchTerm = tagSearchTerm;
-        await DebounceFilterTags();
+        await FilterTags();
     }
 
 
-    private async Task DebounceFilterRecipes()
+    private async Task FilterRecipes()
     {
         if (recipes == null) return;
 
@@ -101,13 +97,9 @@ else
         await UpdateTagCounts();
     }
 
-    private async Task DebounceFilterTags(){
-        if (allTags == null) return;
-
-        filteredTags = string.IsNullOrEmpty(tagSearchTerm)
-            ? allTags
-            : allTags.Where(t => t.Name.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
-
+    private async Task FilterTags()
+    {
+        filteredTags = TagService.FilterTags(allTags, tagSearchTerm);
         await InvokeAsync(StateHasChanged);
     }
 
@@ -118,9 +110,7 @@ else
         var tags = RecipeFilterService.UpdateTagCounts(recipes, searchTerm, selectedTags);
 
         allTags = tags;
-        filteredTags = tags
-            .Where(t => string.IsNullOrEmpty(tagSearchTerm) || t.Name.Contains(tagSearchTerm, StringComparison.OrdinalIgnoreCase))
-            .ToList();
+        filteredTags = TagService.FilterTags(tags, tagSearchTerm);
         selectedTags = selectedTags.Where(tag => tags.Any(t => t.Name == tag && t.Count > 0)).ToList();
 
         await InvokeAsync(StateHasChanged);
@@ -136,12 +126,12 @@ else
         {
             selectedTags.Add(tag);
         }
-        DebounceUtils.Debounce(DebounceFilterRecipes, ref debounceCts);
+        DebounceUtils.Debounce(FilterRecipes, ref debounceCts);
     }
 
     private void RemoveTag(string tag){
         selectedTags.Remove(tag);
-        DebounceUtils.Debounce(DebounceFilterRecipes, ref debounceCts);
+        DebounceUtils.Debounce(FilterRecipes, ref debounceCts);
     }
 
     private void LogError(Exception e, string message)
