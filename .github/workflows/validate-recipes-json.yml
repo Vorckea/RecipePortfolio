@@ -1,5 +1,7 @@
 name: Validate recipes.json
 
+permissions:
+  contents: read
 on:
   push:
     paths: 
