@@ -1,11 +1,6 @@
 ﻿using Bunit;
 using Microsoft.AspNetCore.Components;
 using RecipePortfolio.Shared.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecipePortfolio.Test.UnitTests.Components
 {
@@ -41,8 +36,8 @@ namespace RecipePortfolio.Test.UnitTests.Components
             // Arrange
             using var ctx = new TestContext();
             var searchTerm = "initial";
-            var cut = RenderSearchBar(ctx, 
-                searchTerm: searchTerm, 
+            var cut = RenderSearchBar(ctx,
+                searchTerm: searchTerm,
                 searchTermChanged: EventCallback.Factory.Create<string>(this, term => searchTerm = term)
             );
 
@@ -62,7 +57,7 @@ namespace RecipePortfolio.Test.UnitTests.Components
             // Arrange
             using var ctx = new TestContext();
             var searchTermChangedInvoked = false;
-            var cut = RenderSearchBar(ctx, 
+            var cut = RenderSearchBar(ctx,
                 searchTermChanged: EventCallback.Factory.Create<string>(this, _ => searchTermChangedInvoked = true)
             );
 
