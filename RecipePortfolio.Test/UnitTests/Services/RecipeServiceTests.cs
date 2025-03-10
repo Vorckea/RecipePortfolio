@@ -2,6 +2,7 @@
 using Moq.Protected;
 using RecipePortfolio.Services;
 using System.Net;
+using System.Text.Json;
 
 namespace RecipePortfolio.Test.UnitTests.Services
 {
@@ -67,6 +68,39 @@ namespace RecipePortfolio.Test.UnitTests.Services
             // Assert
             Assert.NotNull(result);
             Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetRecipesAsync_HandlesHttpError()
+        {
+            // Arrange
+            var mockHttpMessageHandler = CreateMockHttpMessageHandler(HttpStatusCode.InternalServerError, "");
+            var recipeService = CreateRecipeService(mockHttpMessageHandler);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<HttpRequestException>(() => recipeService.GetRecipesAsync());
+        }
+
+        [Fact]
+        public async Task GetRecipeByIdAsync_HandlesHttpError()
+        {
+            // Arrange
+            var mockHttpMessageHandler = CreateMockHttpMessageHandler(HttpStatusCode.InternalServerError, "");
+            var recipeService = CreateRecipeService(mockHttpMessageHandler);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<HttpRequestException>(() => recipeService.GetRecipeByIdAsync("1"));
+        }
+
+        [Fact]
+        public async Task GetRecipesAsync_HandlesInvalidJson()
+        {
+            // Arrange
+            var mockHttpMessageHandler = CreateMockHttpMessageHandler(HttpStatusCode.OK, "Invalid JSON");
+            var recipeService = CreateRecipeService(mockHttpMessageHandler);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<JsonException>(() => recipeService.GetRecipesAsync());
         }
 
         [Fact]
