@@ -13,9 +13,9 @@ namespace RecipePortfolio.Test.UnitTests.Services
             _recipeFilterService = new RecipeFilterService();
             _recipes = new List<Recipe>
             {
-                new Recipe { Title = "Spaghetti", Tags = new List<string> {"Italian", "Pasta" } },
-                new Recipe { Title = "Pizza", Tags = new List<string> { "Italian", "Cheese" } },
-                new Recipe { Title = "Sushi", Tags = new List<string> { "Japanese", "Fish" } }
+                new Recipe { Id = "1", Title = "Spaghetti", Tags = new List<string> {"Italian", "Pasta" } },
+                new Recipe { Id = "2", Title = "Pizza", Tags = new List<string> { "Italian", "Cheese" } },
+                new Recipe { Id = "3",Title = "Sushi", Tags = new List<string> { "Japanese", "Fish" } }
             };
         }
 
@@ -134,6 +134,32 @@ namespace RecipePortfolio.Test.UnitTests.Services
 
             // Act
             var result = _recipeFilterService.UpdateTagCounts(_recipes, searchTerm, selectedTags);
+
+            // Assert
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public void FilterRecipesByTagsInclusive_WithTags_ReturnsFilteredRecipes()
+        {
+            // Arrange
+            var selectedTags = new List<string> { "Italian" };
+            // Act
+            var result = _recipeFilterService.FilterRecipesByTagsInclusive(_recipes, selectedTags);
+            // Assert
+            Assert.Equal(2, result.Count);
+            Assert.Equal("Spaghetti", result[0].Title);
+            Assert.Equal("Pizza", result[1].Title);
+        }
+
+        [Fact]
+        public void FilterRecipesByTagsInclusive_WithNonMatchingTags_ReturnsEmptyList()
+        {
+            // Arrange
+            var selectedTags = new List<string> { "Mexican" };
+
+            // Act
+            var result = _recipeFilterService.FilterRecipesByTagsInclusive(_recipes, selectedTags);
 
             // Assert
             Assert.Empty(result);
