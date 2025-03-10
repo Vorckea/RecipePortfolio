@@ -22,10 +22,10 @@ else
     <div class="search-section">
         <div class="row mb-4">
             <div class="col-md-6">
-                <SearchBar SearchTerm="@SearchTerm" OnInput="DebounceSearch" Placeholder="Search recipes..." />
+                <SearchBar SearchTerm="@searchTerm" SearchTermChanged="OnSearchTermChanged" Placeholder="Search recipes..." />
             </div>
             <div class="col-md-6">
-                <SearchBar SearchTerm="@TagSearchTerm" OnInput="DebounceTagSearch" Placeholder="Search tags..." />
+                <SearchBar SearchTerm="@tagSearchTerm" SearchTermChanged="OnTagSearchTermChanged" Placeholder="Search tags..." />
             </div>
         </div>
 
@@ -80,25 +80,18 @@ else
         }
     }
 
-    private string SearchTerm
+    private async Task OnSearchTermChanged(string searchTerm)
     {
-        get => searchTerm;
-        set
-        {
-            searchTerm = value;
-            DebounceUtils.Debounce(DebounceFilterRecipes, ref debounceCts);
-        }
+        this.searchTerm = searchTerm;
+        await DebounceFilterRecipes();
     }
 
-    private string TagSearchTerm
+    private async Task OnTagSearchTermChanged(string tagSearchTerm)
     {
-        get => tagSearchTerm;
-        set
-        {
-            tagSearchTerm = value;
-            DebounceUtils.Debounce(DebounceFilterTags, ref debounceCts);
-        }
+        this.tagSearchTerm = tagSearchTerm;
+        await DebounceFilterTags();
     }
+
 
     private async Task DebounceFilterRecipes()
     {
@@ -131,16 +124,6 @@ else
         selectedTags = selectedTags.Where(tag => tags.Any(t => t.Name == tag && t.Count > 0)).ToList();
 
         await InvokeAsync(StateHasChanged);
-    }
-
-    private void DebounceSearch(ChangeEventArgs e)
-    {
-        SearchTerm = e.Value?.ToString() ?? "";
-    }
-
-    private void DebounceTagSearch(ChangeEventArgs e)
-    {
-        TagSearchTerm = e.Value?.ToString() ?? "";
     }
 
     private void ToggleTagSelection(string tag)
