@@ -96,13 +96,11 @@
         }
     }
 
-    private void OnFocusOut()
+    private async Task OnFocusOut()
     {
-        Task.Delay(200).ContinueWith(_ =>
-        {
-            ShowSuggestions = false;
-            InvokeAsync(StateHasChanged);
-        });
+        await Task.Delay(200);
+        ShowSuggestions = false;
+        StateHasChanged();
     }
 
     private async Task SelectSuggestion(string suggestion)
