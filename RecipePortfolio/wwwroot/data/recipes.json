@@ -174,6 +174,43 @@
     "Portion": "6",
     "Image": "images/tagliatelle-al-tagu-alla-bolognese.jpg",
     "Tags": [ "Pasta", "Italian", "Dinner" ]
+  },
+
+  {
+    "Id": "",
+    "Title": "Creamy Tomato Mushroom Orzo",
+    "Description": "This creamy tomato mushroom pasta is perfect since for those late evinings since it is made in a pan and simple.",
+    "Ingredients": [
+      "2 dl dry orzo",
+      "1 tbsp butter",
+      "1-2 minced cloves garlic",
+      "140g sliced mushrooms",
+      "1 tbsp tomato paste",
+      "80g cherry tomatoes",
+      "2 dl chicken stock",
+      "2-4 tbsp milk",
+      "1 tsp white wine vinegar",
+      "Fresh parsle and basil",
+      "1/4 tsp smoked paprika",
+      "A pinch of chili powder",
+      "A tiny pinch of nutmeg (1/8 tsp)",
+      "Salt and pepper"
+    ],
+    "Instructions": [
+      "Heat the butter in a small pan over medium heat. Add garlic and sauté for 30 sec.",
+      "Add sliced mushrooms and a pinch of salt. Cook for 5-7 min, stirring occasionally until browned.",
+      "Stir in the tomato paste and let it cook for 1-2 mins. Then add halved cherry tomatoes. Cook another 2-3 mins until they start to break down.",
+      "Add the dry orzo directly into the pan. Pour in enough chicken stock to just cover the pasta, stir to combine.",
+      "Bring to a simmer and cook uncovered, stirring occasionally. Add more stock or water if needed and cook for 10-12 min.",
+      "Add a splash of milk and stir to combine. Let it cook 1-2 min until thickened. Salt and pepper to taste.",
+      "Add a small splash of white wine vinegar. Stir taste.",
+      "Add the spices and mix well.",
+      "Stir in chopped parsley and basil. Save a bit for garnish."
+    ],
+    "PrepTime": "20 mins",
+    "Portion": "1",
+    "Image": "images/one-pan-creamy-tomato-mushroom-pasta.jpg",
+    "Tags": [ "Pasta", "Vegetarian", "Italian", "Dinner", "One-Pan" ]
   }
 
 ]
