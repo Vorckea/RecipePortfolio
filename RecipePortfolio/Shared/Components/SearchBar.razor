@@ -1,12 +1,38 @@
 ﻿@using RecipePortfolio.Utils
-<input type="text"
-class="form-control search-bar"
-@bind="SearchTerm"
-placeholder="@Placeholder"
-@oninput="OnInput"/>
+
+
+<div class="position-relative">
+    <input type="text"
+    class="form-control search-bar"
+    value="@SearchTerm"
+    @oninput="OnInput"
+    @onkeydown="OnKeyDown"
+    @onfocusout="OnFocusOut"
+    placeholder="@Placeholder"/>
+
+    @if (ShowSuggestions && Suggestions != null && Suggestions.Any())
+    {
+        <div class="dropdown-menu d-block w-100 border-top-0 rounded-0 rounded-bottom shadow-sm">
+            @foreach (var (suggestion, index) in Suggestions.Select((s, i) => (s, i)))
+            {
+                <button type="button"
+                class="dropdown-item @(SelectedIndex == index ? "active": "")"
+                @onclick="() => SelectSuggestion(suggestion)"
+                @onmousedown:preventDefault>
+                    @suggestion
+                </button>
+            }
+        </div>
+    }
+</div>
+
+
 
 @code {
     private CancellationTokenSource? debounceCts;
+    private bool ShowSuggestions = false;
+    private int SelectedIndex = -1;
+    private List<string>? Suggestions = new();
 
     [Parameter]
     public string SearchTerm { get; set; } = string.Empty;
@@ -17,10 +43,73 @@ placeholder="@Placeholder"
     [Parameter]
     public string Placeholder { get; set; } = "Search...";
 
+    [Parameter]
+    public Func<string, Task<List<String>>>? SuggestionProvider { get; set; }
+
+    [Parameter]
+    public int MinimumSearchLength { get; set; }
+
     private async Task OnInput(ChangeEventArgs e)
     {
-        SearchTerm = e.Value?.ToString() ?? string.Empty;
+        var value = e.Value?.ToString() ?? string.Empty;
+        SearchTerm = value;
+
+        if (SuggestionProvider != null && value.Length >= MinimumSearchLength)
+        {
+            Suggestions = await SuggestionProvider(value);
+            ShowSuggestions = Suggestions.Any();
+            SelectedIndex = -1;
+        }
+        else
+        {
+            ShowSuggestions = false;
+            Suggestions = new List<string>();
+        }
+
         DebounceUtils.Debounce(async () => await SearchTermChanged.InvokeAsync(SearchTerm), ref debounceCts);
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (!ShowSuggestions || Suggestions == null || !Suggestions.Any()) return;
+
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                SelectedIndex = Math.Min(SelectedIndex + 1, Suggestions.Count - 1);
+                StateHasChanged();
+                break;
+            case "ArrowUp":
+                SelectedIndex = Math.Max(SelectedIndex - 1, -1);
+                StateHasChanged();
+                break;
+            case "Enter":
+                if (SelectedIndex >= 0 && SelectedIndex < Suggestions.Count)
+                {
+                    await SelectSuggestion(Suggestions[SelectedIndex]);
+                }
+                break;
+            case "Escape":
+                ShowSuggestions = false;
+                StateHasChanged();
+                break;
+        }
+    }
+
+    private void OnFocusOut()
+    {
+        Task.Delay(200).ContinueWith(_ =>
+        {
+            ShowSuggestions = false;
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private async Task SelectSuggestion(string suggestion)
+    {
+        SearchTerm = suggestion;
+        ShowSuggestions = false;
+        await SearchTermChanged.InvokeAsync(SearchTerm);
     }
 
 }

@@ -5,3 +5,15 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: var(--text-color5);
 }
+
+.dropdown-menu.d-block {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 0;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: var(--primary-color5);
+    color: inherit;
+}
