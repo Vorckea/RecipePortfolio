@@ -44,7 +44,7 @@
     public string Placeholder { get; set; } = "Search...";
 
     [Parameter]
-    public Func<string, Task<List<String>>>? SuggestionProvider { get; set; }
+    public Func<string, Task<List<string>>>? SuggestionProvider { get; set; }
 
     [Parameter]
     public int MinimumSearchLength { get; set; } = 2;
