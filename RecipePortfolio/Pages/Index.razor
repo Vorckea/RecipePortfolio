@@ -23,10 +23,18 @@ else
     <div class="search-section">
         <div class="row mb-4">
             <div class="col-md-6">
-                <SearchBar SearchTerm="@searchTerm" SearchTermChanged="OnSearchTermChanged" Placeholder="Search recipes..." />
+                <SearchBar 
+                SearchTerm="@searchTerm" 
+                SearchTermChanged="OnSearchTermChanged" 
+                Placeholder="Search recipes..." 
+                SuggestionProvider="GetRecipeSuggestions"/>
             </div>
             <div class="col-md-6">
-                <SearchBar SearchTerm="@tagSearchTerm" SearchTermChanged="OnTagSearchTermChanged" Placeholder="Search tags..." />
+                <SearchBar 
+                SearchTerm="@tagSearchTerm" 
+                SearchTermChanged="OnTagSearchTermChanged" 
+                Placeholder="Search tags..." 
+                SuggestionProvider="GetTagSuggestions"/>
             </div>
         </div>
 
@@ -88,6 +96,27 @@ else
         await FilterTags();
     }
 
+    private async Task<List<String>> GetRecipeSuggestions(string searchTerm)
+    {
+        if (recipes == null || string.IsNullOrWhiteSpace(searchTerm)) return new List<string>();
+
+        return recipes
+            .Where(r => r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+            .Select(r => r.Title)
+            .Take(5)
+            .ToList();
+    }
+
+    private async Task<List<string>> GetTagSuggestions(string searchTerm)
+    {
+        if (allTags == null || string.IsNullOrWhiteSpace(searchTerm)) return new();
+
+        return allTags
+            .Where(t => t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+            .Select(t => t.Name)
+            .Take(5)
+            .ToList();
+    }
 
     private async Task FilterRecipes()
     {
