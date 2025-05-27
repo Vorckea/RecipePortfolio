@@ -98,6 +98,18 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: var(--text-color5);
 }
+
+.dropdown-menu.d-block[b-zts5vie8hl] {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 0;
+}
+
+.dropdown-item.active[b-zts5vie8hl],
+.dropdown-item:active[b-zts5vie8hl] {
+    background-color: var(--primary-color5);
+    color: inherit;
+}
 /* /Shared/Components/SelectedTagsList.razor.rz.scp.css */
 .selected-tag-pill[b-rt0qobmcun] {
     margin: 0.2rem;
