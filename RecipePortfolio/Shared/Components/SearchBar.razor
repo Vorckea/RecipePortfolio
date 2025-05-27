@@ -98,7 +98,8 @@
 
     private async Task OnFocusOut()
     {
-        await Task.Delay(200);
+        int FocusOutDelay = 200;
+        await Task.Delay(FocusOutDelay);
         ShowSuggestions = false;
         StateHasChanged();
     }

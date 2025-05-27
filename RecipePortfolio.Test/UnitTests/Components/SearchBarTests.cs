@@ -7,12 +7,12 @@ namespace RecipePortfolio.Test.UnitTests.Components
 {
     public class SearchBarTests
     {
-        private const int DebounceDelay = 400;
+        private const int _debounceDelay = 400;
 
         private IRenderedComponent<SearchBar> RenderSearchBar(
-            TestContext ctx, 
-            string placeholder = "Search for recipes...", 
-            string searchTerm = "", 
+            TestContext ctx,
+            string placeholder = "Search for recipes...",
+            string searchTerm = "",
             EventCallback<string>? searchTermChanged = null,
             Func<string, Task<List<string>>>? suggestionProvider = null,
             int minimumSearchLength = 2)
@@ -57,7 +57,7 @@ namespace RecipePortfolio.Test.UnitTests.Components
             cut.Find("input").Input("new search term");
 
             // Simulate debounce delay
-            await Task.Delay(DebounceDelay);
+            await Task.Delay(_debounceDelay);
 
             // Assert
             Assert.Equal("new search term", searchTerm);
@@ -77,7 +77,7 @@ namespace RecipePortfolio.Test.UnitTests.Components
             cut.Find("input").Input("test");
 
             // Simulate debounce delay
-            await Task.Delay(DebounceDelay);
+            await Task.Delay(_debounceDelay);
 
             // Assert
             Assert.True(searchTermChangedInvoked);
@@ -174,7 +174,7 @@ namespace RecipePortfolio.Test.UnitTests.Components
 
             // Click the first suggestion
             cut.FindAll(".dropdown-item")[0].Click();
-            await Task.Delay(DebounceDelay);
+            await Task.Delay(_debounceDelay);
 
             // Assert
             Assert.Equal("Apple", searchTerm);
@@ -237,7 +237,7 @@ namespace RecipePortfolio.Test.UnitTests.Components
             input.KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
             await Task.Delay(10);
             input.KeyDown(new KeyboardEventArgs { Key = "Enter" });
-            await Task.Delay(DebounceDelay);
+            await Task.Delay(_debounceDelay);
 
             // Assert
             Assert.Equal("Apple", searchTerm);
