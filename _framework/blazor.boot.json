@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "RecipePortfolio",
   "resources": {
-    "hash": "sha256-w94tc1lDU4WGzzwzQ2HG6LdSUOCc7fQ4E3U2sR3B1SY=",
+    "hash": "sha256-QU+1huU4MmU0WH0+9aL8pwRfinGlD6a1zXqlf1fKSOQ=",
     "fingerprinting": {
       "Microsoft.AspNetCore.Components.edbp5owrj1.wasm": "Microsoft.AspNetCore.Components.wasm",
       "Microsoft.AspNetCore.Components.Web.eetbg1wmnj.wasm": "Microsoft.AspNetCore.Components.Web.wasm",
@@ -36,7 +36,7 @@
       "System.Text.Json.rx0h7tjbo1.wasm": "System.Text.Json.wasm",
       "System.Text.RegularExpressions.qhcsf9u1lx.wasm": "System.Text.RegularExpressions.wasm",
       "System.Private.CoreLib.3gg1c9l5t9.wasm": "System.Private.CoreLib.wasm",
-      "RecipePortfolio.ujjpiwl835.wasm": "RecipePortfolio.wasm",
+      "RecipePortfolio.l3veynsrcf.wasm": "RecipePortfolio.wasm",
       "dotnet.js": "dotnet.js",
       "dotnet.native.50iqa8w3ys.js": "dotnet.native.js",
       "dotnet.native.pk43x8e436.wasm": "dotnet.native.wasm",
@@ -95,7 +95,7 @@
       "System.Text.Encodings.Web.yosxql6jn5.wasm": "sha256-fgKqJw0Vkd2XqqB/Aj8WLXZK9/DPfEX9FcsrTzQTRFU=",
       "System.Text.Json.rx0h7tjbo1.wasm": "sha256-/wm7wuEu4fJd08nlsDi+AMShHWYk/vY2Zdbn/rw+5q0=",
       "System.Text.RegularExpressions.qhcsf9u1lx.wasm": "sha256-wn7A6lyHyUX6ncCXE68PB0fgNpaI8xcNLGHt7qHCuQo=",
-      "RecipePortfolio.ujjpiwl835.wasm": "sha256-OlHpekZ11ABPPQpnoQbQlcPYzEGjZfng8RwExZhvMyA="
+      "RecipePortfolio.l3veynsrcf.wasm": "sha256-8TLl+NPDuDMNawl3UzpaCenaMu56oPgcnU4n00ntAVI="
     }
   },
   "cacheBootResources": true,
