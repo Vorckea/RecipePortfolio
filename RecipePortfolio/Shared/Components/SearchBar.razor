@@ -1,28 +1,40 @@
 ﻿@using RecipePortfolio.Utils
+@implements IDisposable
 
 
 <div class="position-relative">
+    <label class="sr-only" for="@inputId">Search</label>
     <input type="text"
     class="form-control search-bar"
     value="@SearchTerm"
     @oninput="OnInput"
     @onkeydown="OnKeyDown"
     @onfocusout="OnFocusOut"
-    placeholder="@Placeholder"/>
+    placeholder="@Placeholder"
+    role="combobox"
+    aria-expanded="@ShowSuggestions"
+    aria-controls="@suggestionsListId"
+    aria-autocomplete="list"
+    aria-activedescendant="@ActiveDescendentId" />
 
-    @if (ShowSuggestions && Suggestions != null && Suggestions.Any())
+    @if (ShowSuggestions && Suggestions?.Any() == true)
     {
-        <div class="dropdown-menu d-block w-100 border-top-0 rounded-0 rounded-bottom shadow-sm">
+        <ul id="@suggestionsListId" class="dropdown-menu d-block w-100 border-top-0 rounded-0 rounded-bottom shadow-sm" role="listbox">
             @foreach (var (suggestion, index) in Suggestions.Select((s, i) => (s, i)))
             {
-                <button type="button"
-                class="dropdown-item @(SelectedIndex == index ? "active": "")"
-                @onclick="() => SelectSuggestion(suggestion)"
-                @onmousedown:preventDefault>
+                var optionId = $"{suggestionItemIdPrefix}-{index}";
+
+                <li
+                    id="@optionId"
+                    role="option"
+                    class="dropdown-item @(SelectedIndex == index ? "active" : "")"
+                    aria-selected="@(SelectedIndex == index)"
+                    @onmousedown:preventDefault
+                    @onclick="() => SelectSuggestion(suggestion)">
                     @suggestion
-                </button>
+                </li>
             }
-        </div>
+        </ul>
     }
 </div>
 
@@ -30,9 +42,16 @@
 
 @code {
     private CancellationTokenSource? debounceCts;
+    private CancellationTokenSource? providerCts;
     private bool ShowSuggestions = false;
     private int SelectedIndex = -1;
-    private List<string>? Suggestions = new();
+    private IReadOnlyList<string> Suggestions { get; set; } = Array.Empty<string>();
+
+    private readonly string inputId = $"search-input-{Guid.NewGuid():N}";
+    private readonly string suggestionsListId = $"search-suggestions-{Guid.NewGuid():N}";
+    private readonly string suggestionItemIdPrefix = $"search-suggestion-{Guid.NewGuid():N}";
+
+    private string? ActiveDescendentId => SelectedIndex >= 0 ? $"{suggestionItemIdPrefix}-{SelectedIndex}" : null;
 
     [Parameter]
     public string SearchTerm { get; set; } = string.Empty;
@@ -44,7 +63,7 @@
     public string Placeholder { get; set; } = "Search...";
 
     [Parameter]
-    public Func<string, Task<List<string>>>? SuggestionProvider { get; set; }
+    public Func<string, CancellationToken, Task<List<string>>>? SuggestionProvider { get; set; }
 
     [Parameter]
     public int MinimumSearchLength { get; set; } = 2;
@@ -54,19 +73,44 @@
         var value = e.Value?.ToString() ?? string.Empty;
         SearchTerm = value;
 
+        DebounceUtils.Debounce(async () => await SearchTermChanged.InvokeAsync(SearchTerm), ref debounceCts);
+
         if (SuggestionProvider != null && value.Length >= MinimumSearchLength)
         {
-            Suggestions = await SuggestionProvider(value);
-            ShowSuggestions = Suggestions.Any();
-            SelectedIndex = -1;
+            DebounceUtils.Debounce(async () =>
+            {
+                providerCts?.Cancel();
+                providerCts?.Dispose();
+                providerCts = new CancellationTokenSource();
+                try
+                {
+                    var suggestions = await SuggestionProvider(value, providerCts.Token).ConfigureAwait(false);
+                    await InvokeAsync(() =>
+                    {
+                        Suggestions = (suggestions ?? new List<string>()).ToArray();
+                        ShowSuggestions = Suggestions.Any();
+                        SelectedIndex = -1;
+                        StateHasChanged();
+                    });
+                }
+                catch (OperationCanceledException) {}
+                catch (Exception)
+                {
+                    await InvokeAsync(() =>
+                    {
+                        Suggestions = Array.Empty<string>();
+                        ShowSuggestions = false;
+                        StateHasChanged();
+                    });
+                }
+            }, ref debounceCts);
         }
         else
         {
+            Suggestions = Array.Empty<string>();
             ShowSuggestions = false;
-            Suggestions = new List<string>();
+            SelectedIndex = -1;
         }
-
-        DebounceUtils.Debounce(async () => await SearchTermChanged.InvokeAsync(SearchTerm), ref debounceCts);
     }
 
     private async Task OnKeyDown(KeyboardEventArgs e)
@@ -83,6 +127,14 @@
                 SelectedIndex = Math.Max(SelectedIndex - 1, -1);
                 StateHasChanged();
                 break;
+            case "Home":
+                SelectedIndex = 0;
+                await InvokeAsync(StateHasChanged);
+                break;
+            case "End":
+                SelectedIndex = Suggestions.Count - 1;
+                await InvokeAsync(StateHasChanged);
+                break;
             case "Enter":
                 if (SelectedIndex >= 0 && SelectedIndex < Suggestions.Count)
                 {
@@ -98,17 +150,34 @@
 
     private async Task OnFocusOut()
     {
-        int FocusOutDelay = 200;
-        await Task.Delay(FocusOutDelay);
+        await Task.Delay(150);
         ShowSuggestions = false;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task SelectSuggestion(string suggestion)
     {
         SearchTerm = suggestion;
         ShowSuggestions = false;
+        SelectedIndex = -1;
         await SearchTermChanged.InvokeAsync(SearchTerm);
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            debounceCts?.Cancel();
+            debounceCts?.Dispose();
+        }
+        catch(ObjectDisposedException) {}
+
+        try
+        {
+            providerCts?.Cancel();
+            providerCts?.Dispose();
+        }
+        catch (ObjectDisposedException) { }
     }
 
 }

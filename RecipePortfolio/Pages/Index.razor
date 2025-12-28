@@ -4,6 +4,7 @@
 @using RecipePortfolio.Shared.Components
 @using RecipePortfolio.Shared
 @using RecipePortfolio.Utils
+@using System.Threading
 @inject IRecipeService RecipeService
 @inject IRecipeFilterService RecipeFilterService
 @inject ITagService TagService
@@ -96,20 +97,32 @@ else
         await FilterTags();
     }
 
-    private async Task<List<String>> GetRecipeSuggestions(string searchTerm)
+    private async Task<List<String>> GetRecipeSuggestions(string searchTerm, CancellationToken cancellationToken)
     {
-        if (recipes == null || string.IsNullOrWhiteSpace(searchTerm)) return new List<string>();
+        if (recipes == null || string.IsNullOrWhiteSpace(searchTerm))
+        {
+            return new List<string>();
+        }
 
-        return recipes
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var result = recipes
             .Where(r => r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
             .Select(r => r.Title)
             .Take(5)
             .ToList();
+
+        return result;
     }
 
-    private async Task<List<string>> GetTagSuggestions(string searchTerm)
+    private async Task<List<string>> GetTagSuggestions(string searchTerm, CancellationToken cancellationToken)
     {
-        if (allTags == null || string.IsNullOrWhiteSpace(searchTerm)) return new();
+        if (allTags == null || string.IsNullOrWhiteSpace(searchTerm)) 
+        { 
+            return new List<string>();
+        }
+
+        cancellationToken.ThrowIfCancellationRequested();
 
         return allTags
             .Where(t => t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
