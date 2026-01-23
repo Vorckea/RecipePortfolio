@@ -5,17 +5,17 @@
 <div class="position-relative">
     <label class="sr-only" for="@inputId">Search</label>
     <input type="text"
-    class="form-control search-bar"
-    value="@SearchTerm"
-    @oninput="OnInput"
-    @onkeydown="OnKeyDown"
-    @onfocusout="OnFocusOut"
-    placeholder="@Placeholder"
-    role="combobox"
-    aria-expanded="@ShowSuggestions"
-    aria-controls="@suggestionsListId"
-    aria-autocomplete="list"
-    aria-activedescendant="@ActiveDescendentId" />
+        class="form-control search-bar"
+        value="@SearchTerm"
+        @oninput="OnInput"
+        @onkeydown="OnKeyDown"
+        @onfocusout="OnFocusOut"
+        placeholder="@Placeholder"
+        role="combobox"
+        aria-expanded="@(ShowSuggestions ? "true":"false")"
+        aria-controls="@suggestionsListId"
+        aria-autocomplete="list"
+        />
 
     @if (ShowSuggestions && Suggestions?.Any() == true)
     {
@@ -41,7 +41,8 @@
 
 
 @code {
-    private CancellationTokenSource? debounceCts;
+    private CancellationTokenSource? inputDebounceCts;
+    private CancellationTokenSource? providerDebounceCts;
     private CancellationTokenSource? providerCts;
     private bool ShowSuggestions = false;
     private int SelectedIndex = -1;
@@ -73,7 +74,7 @@
         var value = e.Value?.ToString() ?? string.Empty;
         SearchTerm = value;
 
-        DebounceUtils.Debounce(async () => await SearchTermChanged.InvokeAsync(SearchTerm), ref debounceCts);
+        DebounceUtils.Debounce(async () => await SearchTermChanged.InvokeAsync(SearchTerm), ref inputDebounceCts);
 
         if (SuggestionProvider != null && value.Length >= MinimumSearchLength)
         {
@@ -84,7 +85,7 @@
                 providerCts = new CancellationTokenSource();
                 try
                 {
-                    var suggestions = await SuggestionProvider(value, providerCts.Token).ConfigureAwait(false);
+                    var suggestions = await SuggestionProvider(value, providerCts.Token);
                     await InvokeAsync(() =>
                     {
                         Suggestions = (suggestions ?? new List<string>()).ToArray();
@@ -103,7 +104,7 @@
                         StateHasChanged();
                     });
                 }
-            }, ref debounceCts);
+            }, ref providerDebounceCts);
         }
         else
         {
@@ -165,19 +166,9 @@
 
     public void Dispose()
     {
-        try
-        {
-            debounceCts?.Cancel();
-            debounceCts?.Dispose();
-        }
-        catch(ObjectDisposedException) {}
-
-        try
-        {
-            providerCts?.Cancel();
-            providerCts?.Dispose();
-        }
-        catch (ObjectDisposedException) { }
+        try { inputDebounceCts?.Cancel(); inputDebounceCts?.Dispose(); inputDebounceCts = null; } catch { }
+        try { providerDebounceCts?.Cancel(); providerDebounceCts?.Dispose(); providerDebounceCts = null; } catch { }
+        try { providerCts?.Cancel(); providerCts?.Dispose(); providerCts = null; } catch { }
     }
 
 }

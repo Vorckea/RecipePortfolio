@@ -211,6 +211,41 @@
     "Portion": "1",
     "Image": "images/one-pan-creamy-tomato-mushroom-pasta.jpg",
     "Tags": [ "Pasta", "Vegetarian", "Italian", "Dinner", "One-Pan" ]
+  },
+
+  {
+    "Id": "thai-basil-pork",
+    "Title": "Thai Basil Pork with Green Beans (Pad Krapow Moo)",
+    "Description": "Pad Krapow Moo is a classic Thai street-food dish made with minced pork stir-fried with garlic, chilies, fish sauce, and fragrant Thai basil. This version includes green beans for texture and freshness and is traditionally served over rice with a crispy fried egg.",
+    "Ingredients": [
+      "500g pork mince",
+      "200g green beans, trimmed and cut into 2–3 cm pieces",
+      "1 onion, sliced (optional)",
+      "6 cloves garlic, finely chopped",
+      "1–2 fresh chilies, finely sliced or ½–1 tsp crushed chilies",
+      "1 tbsp light soy sauce",
+      "1 tsp dark soy sauce",
+      "2 tsp fish sauce",
+      "1–2 tsp sugar (demerara or caster)",
+      "2 tbsp water",
+      "Big handful Thai basil leaves",
+      "1–2 tbsp neutral cooking oil",
+      "Cooked rice, to serve",
+      "Fried eggs, to serve"
+    ],
+    "Instructions": [
+      "Prepare all ingredients before cooking. Chop the garlic, slice the onion (if using), cut the green beans, and mix the sauce ingredients in a small bowl: light soy sauce, dark soy sauce, fish sauce, sugar, and water.",
+      "Heat a large wok or frying pan over high heat and add the cooking oil. Add the pork mince, spread it out, and let it sear for about 30 seconds before breaking it up. Stir-fry until lightly browned and starting to caramelise.",
+      "Add the garlic, chilies, and onion. Stir-fry for 1–2 minutes until fragrant and the onion begins to soften.",
+      "Add the green beans and stir-fry for about 2 minutes. If the beans are thick or still very firm, add a small splash of water and cover the pan for 1 minute to help them soften.",
+      "Pour in the prepared sauce and stir-fry on high heat for another 1–2 minutes until the sauce reduces slightly and coats the pork and vegetables.",
+      "Turn off the heat and add the Thai basil leaves. Stir until just wilted and aromatic.",
+      "Serve hot over steamed rice and top with a crispy fried egg."
+    ],
+    "PrepTime": "20 minutes",
+    "Portion": "2–3",
+    "Image": "images/thai-basil-pork.jpg",
+    "Tags": [ "Thai", "Pork", "Stir-fry", "Dinner", "Spicy", "Rice" ]
   }
 
 ]
